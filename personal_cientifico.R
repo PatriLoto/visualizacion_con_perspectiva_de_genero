@@ -9,7 +9,7 @@ datos<-read.csv2("datos/personas_2018.csv", row.names = NULL, header=T,
 
 #error 1: estaba utilizando csv y buscaba para separar espacios en blancos
 
-
+----------------------------------------------------
 indicadores<-read.csv2("datos/personas_indicadores_genero_2018.csv", row.names = NULL, header=T, 
                 na.strings = "")
 view(indicadores)
