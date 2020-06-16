@@ -33,9 +33,9 @@ cant_varones_anio_inst <- programadoras%>%group_by(institucion, anio)%>% summari
 
 
 # cantidad total de estudiantes 
- mujeres_anio<- programadoras%>%group_by(anio)%>% summarise(total= sum(estMujeres))%>% mutate(genero='Mujeres') 
+ mujeres_anio<- programadoras%>%group_by(anio)%>% summarise(total= sum(estMujeres), prom=(round(mean(estMujeres),2)))%>% mutate(genero='Mujeres') 
  View(mujeres_anio)
- hombres_anio<- programadoras%>%group_by(anio)%>% summarise(total= sum(estVarones))%>% mutate(genero='Hombres')
+ hombres_anio<- programadoras%>%group_by(anio)%>% summarise(total= sum(estVarones), prom=(round(mean(estVarones),2)))%>% mutate(genero='Hombres')
  View(hombres_anio)
  
  estudiantes_R_bar<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(total))
@@ -70,7 +70,28 @@ cant_varones_anio_inst <- programadoras%>%group_by(institucion, anio)%>% summari
  
  estudiantes_R<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(anio,total))
  view(estudiantes_R)
+ # con promedios
+ ggplot(data=estudiantes_R, aes(x=anio, y=prom, color=genero))+
+   geom_line(size=2) +
+   scale_colour_manual(values= c("#713580", "#41b6a6"), labels= c('Mujeres', 'Hombres'))+
+   facet_wrap(~genero) +
+   labs(title = 'Estudiantes de carreras de exactas en universidades \n de toda la Argentina', x='',y='', color= ' ',
+        subtitle ="Para el período 2010-2015" , 
+        caption = "DataSource: Chicas en tecnología") +
+   theme_ipsum_tw()#
+ ggsave(here("grafico_prom_estudiantes.png"), height = 8, width = 10, units = "in", type='cairo')
  
+ #opcion 2
+ ggplot(data=estudiantes_R, aes(x=anio, y=prom, color=genero))+
+   geom_line(size=2) +
+   scale_colour_manual(values= c("#713580", "#41b6a6"), labels= c('Mujeres', 'Hombres'))+
+   facet_wrap(~genero, ncol=1, scales="free_y") +
+   labs(title = 'Estudiantes de carreras de exactas en universidades \n de toda la Argentina', x='',y='', color= ' ',
+        subtitle ="Para el período 2010-2015" , 
+        caption = "DataSource: Chicas en tecnología") +
+   theme_ipsum_tw()#
+ # con totales
+ #opción 1
  ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
    geom_line(size=2) +
    scale_colour_manual(values= c("#713580", "#41b6a6"), labels= c('Mujeres', 'Hombres'))+
@@ -80,7 +101,17 @@ cant_varones_anio_inst <- programadoras%>%group_by(institucion, anio)%>% summari
         caption = "DataSource: Chicas en tecnología") +
    theme_ipsum_tw()#
  
- ggsave(here("grafico_lineas_estudiantes.png"), height = 8, width = 10, units = "in", type='cairo')
+ #opcion2
+ ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
+   geom_line(size=2) +
+   scale_colour_manual(values= c("#713580", "#41b6a6"), labels= c('Mujeres', 'Hombres'))+
+   facet_wrap(~genero, ncol=1, scales="free_y") +
+   labs(title = 'Estudiantes de carreras de exactas en universidades \n de toda la Argentina', x='',y='', color= ' ',
+        subtitle ="Para el período 2010-2015" , 
+        caption = "DataSource: Chicas en tecnología") +
+   theme_ipsum_tw()#
+ 
+ ggsave(here("grafico_lineas_Opcion2_estudiantes.png"), height = 8, width = 10, units = "in", type='cairo')
  
  
  
