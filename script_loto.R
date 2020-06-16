@@ -31,12 +31,67 @@ programadoras$nivel
 cant_varones_anio_inst <- programadoras%>%group_by(institucion, anio)%>% summarise(totalHombresXinstituto= sum(estVarones)) 
  View(cant_varones_anio_inst)
 
+
+# cantidad total de estudiantes 
+ mujeres_anio<- programadoras%>%group_by(anio)%>% summarise(total= sum(estMujeres))%>% mutate(genero='Mujeres') 
+ View(mujeres_anio)
+ hombres_anio<- programadoras%>%group_by(anio)%>% summarise(total= sum(estVarones))%>% mutate(genero='Hombres')
+ View(hombres_anio)
+ 
+ estudiantes_R_bar<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(total))
+ view(estudiantes_R_bar)
+ 
+ library(hrbrthemes)
+ hrbrthemes::import_titillium_web()
+ 
+ ggplot(data=estudiantes_R_bar, aes(x=anio, y=total,fill=genero))+
+   geom_bar(stat= "identity", position = "dodge", width= .7, color= "black")+
+   #geom_col( position = position_dodge())+
+   coord_flip()+
+   scale_fill_manual(values= c("#713580", "#41b6a6"), labels= c('Mujeres', 'Hombres'))+
+   scale_x_discrete(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c("2010", "2011", "2012","2013", "2014","2015"))+
+    #geom_text(aes(label=total), size=2)+
+   labs(title = 'Estudiantes de carreras de exactas en universidades \n de toda la Argentina', x='',y='', color= ' ',
+        subtitle ="Para el período 2010-2015" , 
+        caption = "DataSource: Chicas en tecnología") +
+   theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+         plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                   family ="Garamond",    
+                                   hjust = 0.5,vjust = 1,
+                                   colour = "#2c204d", 
+                                   face = 'bold', 
+                                   margin = margin(b = 12 * 1.2)),
+         legend.position="top",legend.text= element_text(color="#2c204d", 
+                                                         size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))+
+   theme_ipsum_tw()
+ ggsave(here("grafico_barras.png"), height = 8, width = 10, units = "in", type='cairo')
+ 
+ 
+ 
+ estudiantes_R<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(anio,total))
+ view(estudiantes_R)
+ 
+ ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
+   geom_line(size=2) +
+   scale_colour_manual(values= c("#713580", "#41b6a6"), labels= c('Mujeres', 'Hombres'))+
+   facet_wrap(~genero) +
+   labs(title = 'Estudiantes de carreras de exactas en universidades \n de toda la Argentina', x='',y='', color= ' ',
+        subtitle ="Para el período 2010-2015" , 
+        caption = "DataSource: Chicas en tecnología") +
+   theme_ipsum_tw()#
+ 
+ ggsave(here("grafico_lineas_estudiantes.png"), height = 8, width = 10, units = "in", type='cairo')
+ 
+ 
+ 
 # cantidad de estudiantes mujeres y varones por anio y nivel  
  cant_mujeres_anio_nivel <-programadoras %>% group_by(anio, nivel)%>% summarise(totalMujeresXnivel= sum(estMujeres)) 
  view(cant_mujeres_anio_nivel)
  
  cant_hombres_anio_nivel <-programadoras %>% group_by(anio, nivel)%>% summarise(totalHombresXnivel= sum(estVarones)) 
  view(cant_hombres_anio_nivel)
+ 
+ 
  
  estudiantes_mujeres_anio_nivelR <-programadoras %>% group_by(anio, nivel)%>% summarise(est_nivel= sum(estMujeres))%>% mutate(genero='Femenino') 
  view(estudiantes_mujeres_anio_nivelR)
@@ -51,7 +106,19 @@ estudiantes_hombres_anio_nivelR <-programadoras %>% group_by(anio, nivel)%>% sum
    geom_line() +
    facet_wrap(~genero) #, scales="free_y"
    
+ #quiero filtrar por nivel y no puedo
+# solo_grado<-estudiantes_nivelR %>% filter(nivel=='Grado')
+#  view(solo_grado) ver factors 
+ # programadoras$nivel[nivel=]
+ # solo_grado <-programadoras %>% filter(nivel==1) %>% group_by(anio)%>% summarise(est_nivel= sum(estVarones))%>% mutate(genero='Masculino') 
+ # view(solo_grado)
+ # prueba <-programadoras %>% mutate(nivel2= str_replace_all(nivel,"Grado//s",'Grado')) 
+ # prueba2 <- prueba %>% ifelse(nivel2=="Grado//s", 'Grado', 'pregrado')   #view(prueba)
+ # view(prueba2)
  
+ 
+ ggplot(data=estudiantes_nivelR, aes(x=anio, y=est_nivel,colour=genero))+
+   geom_col()
 #---------------------------------
 # REINSCRIPTOS
 #--------------------------------
