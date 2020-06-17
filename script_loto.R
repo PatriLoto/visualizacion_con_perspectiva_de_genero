@@ -21,7 +21,7 @@ dim(programadoras)
 programadoras$nivel
 
 #---------------------------------
-# ESTUDIANTES
+# ESTUDIANTES por año y unidad académica
 #--------------------------------
 ## cantidad de estudiantes hombres y mujeres por anio y por unidad academica
 
@@ -31,87 +31,223 @@ programadoras$nivel
 cant_varones_anio_inst <- programadoras%>%group_by(institucion, anio)%>% summarise(totalHombresXinstituto= sum(estVarones)) 
  View(cant_varones_anio_inst)
 
-
-# cantidad total de estudiantes 
- mujeres_anio<- programadoras%>%group_by(anio)%>% summarise(total= sum(estMujeres), prom=(round(mean(estMujeres),2)))%>% mutate(genero='Mujeres') 
+#----------------------------------------------
+# cantidad total de estudiantes hombres y mujeres
+#-----------------------------------------------
+ mujeres_anio<- programadoras%>%group_by(anio)%>% summarise(total= sum(estMujeres), tot=sum(estMujeres, estVarones), prom=(round(mean(estMujeres),0)))%>% mutate(genero='Mujeres') 
  View(mujeres_anio)
- hombres_anio<- programadoras%>%group_by(anio)%>% summarise(total= sum(estVarones), prom=(round(mean(estVarones),2)))%>% mutate(genero='Hombres')
+ hombres_anio<- programadoras%>%group_by(anio)%>% summarise(total= sum(estVarones), tot=sum(estMujeres, estVarones), prom=(round(mean(estVarones),0)))%>% mutate(genero='Hombres')
  View(hombres_anio)
  
+ # gráfico barras contiguas paradas
+ library(hrbrthemes)
+ hrbrthemes::import_titillium_web()
  estudiantes_R_bar<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(total))
  view(estudiantes_R_bar)
  
- library(hrbrthemes)
- hrbrthemes::import_titillium_web()
- 
  ggplot(data=estudiantes_R_bar, aes(x=anio, y=total,fill=genero))+
-   geom_bar(stat= "identity", position = "dodge", width= .7, color= "black")+
+    geom_bar(stat= "identity", position = "dodge", width= .8, color= "black")+
+    #coord_flip()+
+    scale_fill_manual(values= c("#d8d860","#a32ea2"), labels= c('Hombres', 'Mujeres'))+  #amarillo claro:#f1fa8c  verde:#41b6a6 lilaoscuro:#713580 
+    #scale_x_discrete(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c('2010', '2011', '2012','2013', '2014','2015'))+
+    #geom_text(aes(label=total), size=2)+
+    labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas\n', x='',y='',fill= ' ',
+         subtitle ="Para el período 2010-2015" , 
+         caption = "DataSource: Chicas en tecnología") +
+    theme_ipsum_tw()+
+    theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+          plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                   # family ="Garamond",    
+                                    hjust = 0,vjust = 1,
+                                    colour = "#2c204d", 
+                                    face = 'bold', 
+                                    margin = margin(b = 12 * 1.2)),
+          legend.position="bottom",legend.text= element_text(color="#2c204d", 
+                                                          size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+    #theme_ipsum_tw()
+    #theme_ft_rc()
+ # para theme negro:theme_ft_rc() 
+ ggsave(here("barras_con_leyenda arriba_2.png"), height = 8, width = 10, units = "in", type='cairo')
+ 
+ #CON FACET WRAP
+ ggplot(data=estudiantes_R_bar, aes(x=anio, y=total,fill=genero))+
+    geom_bar(stat= "identity", position = "dodge", width= .8, color= "black")+
+    #coord_flip()+
+    scale_fill_manual(values= c("#d8d860","#a32ea2"), labels= c('Hombres', 'Mujeres'))+  #amarillo claro:#f1fa8c  verde:#41b6a6 lilaoscuro:#713580 
+    #scale_x_discrete(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c('2010', '2011', '2012','2013', '2014','2015'))+
+    #geom_text(aes(label=total), size=2)+
+    labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas\n', x='',y='',fill= ' ',
+         subtitle ="Para el período 2010-2015" , 
+         caption = "DataSource: Chicas en tecnología") +
+    theme_ipsum_tw()+
+    theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+          plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                    # family ="Garamond",    
+                                    hjust = 0,vjust = 1,
+                                    colour = "#2c204d", 
+                                    face = 'bold', 
+                                    margin = margin(b = 12 * 1.2)),
+          legend.position=" ",legend.text= element_text(color="#2c204d", 
+                                                             size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))+
+    #facet_wrap(~genero, scales = 'free_y') # barras_con_facet3png
+    facet_grid(anio ~ genero, space= 'free_y', scales = 'free_y')  # barras_con_facet4.png
+ #theme_ipsum_tw()
+ 
+ ggsave(here("barras_con_facet4.png"), height = 8, width = 10, units = "in", type='cairo')
+ 
+ 
+ # gráfico barras contiguas acostadas
+ estudiantes_R_flip<-rbind(mujeres_anio, hombres_anio)%>%arrange((total))
+ view(estudiantes_R_flip)
+ 
+ ggplot(data=estudiantes_R_flip, aes(x=anio, y=total,fill=genero))+
+   geom_bar(stat= "identity", position = "dodge", width= .8, color= "black")+
    #geom_col( position = position_dodge())+
    coord_flip()+
-   scale_fill_manual(values= c("#713580", "#41b6a6"), labels= c('Mujeres', 'Hombres'))+
-   scale_x_discrete(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c("2010", "2011", "2012","2013", "2014","2015"))+
+   scale_fill_manual(values= c("#d8d860","#a32ea2"), labels= c('Hombres', 'Mujeres'))+  #amarillo claro:#f1fa8c  verde:#41b6a6 lilaoscuro:#713580 
+   #scale_x_discrete(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c('2010', '2011', '2012','2013', '2014','2015'))+
     #geom_text(aes(label=total), size=2)+
-   labs(title = 'Estudiantes de carreras de exactas en universidades \n de toda la Argentina', x='',y='', color= ' ',
+   labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas\n', x='',y='',fill= ' ',
         subtitle ="Para el período 2010-2015" , 
         caption = "DataSource: Chicas en tecnología") +
+   theme_ipsum_tw()+
    theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
          plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
                                    family ="Garamond",    
-                                   hjust = 0.5,vjust = 1,
+                                   hjust = 0,vjust = 1,
                                    colour = "#2c204d", 
                                    face = 'bold', 
                                    margin = margin(b = 12 * 1.2)),
          legend.position="top",legend.text= element_text(color="#2c204d", 
-                                                         size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))+
-   theme_ipsum_tw()
- ggsave(here("grafico_barras.png"), height = 8, width = 10, units = "in", type='cairo')
+                                                         size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+   #theme_ipsum_tw()
+ ggsave(here("grafico_barras_nuevos_colores_flip.png"), height = 8, width = 10, units = "in", type='cairo')
  
  
- 
+ # graficos de líneas con promedios facet por género
  estudiantes_R<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(anio,total))
  view(estudiantes_R)
  # con promedios
  ggplot(data=estudiantes_R, aes(x=anio, y=prom, color=genero))+
    geom_line(size=2) +
-   scale_colour_manual(values= c("#713580", "#41b6a6"), labels= c('Mujeres', 'Hombres'))+
+   scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
    facet_wrap(~genero) +
-   labs(title = 'Estudiantes de carreras de exactas en universidades \n de toda la Argentina', x='',y='', color= ' ',
+   labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas\n', x='',y='', color= ' ',
         subtitle ="Para el período 2010-2015" , 
         caption = "DataSource: Chicas en tecnología") +
-   theme_ipsum_tw()#
- ggsave(here("grafico_prom_estudiantes.png"), height = 8, width = 10, units = "in", type='cairo')
+    labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas\n', x='',y='',fill= ' ',
+         subtitle ="Para el período 2010-2015" , 
+         caption = "DataSource: Chicas en tecnología") +
+    theme_ipsum_tw()+
+    theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+          plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                    family ="Garamond",    
+                                    hjust = 0,vjust = 1,
+                                    colour = "#2c204d", 
+                                    face = 'bold', 
+                                    margin = margin(b = 12 * 1.2)),
+          legend.position="  ", legend.text= element_text(color="#2c204d", 
+                                                          size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+   #theme_ipsum_tw()#
+    
+ ggsave(here("grafico_prom_est.png"), height = 8, width = 10, units = "in", type='cairo')
  
  #opcion 2
  ggplot(data=estudiantes_R, aes(x=anio, y=prom, color=genero))+
    geom_line(size=2) +
-   scale_colour_manual(values= c("#713580", "#41b6a6"), labels= c('Mujeres', 'Hombres'))+
+   scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
    facet_wrap(~genero, ncol=1, scales="free_y") +
-   labs(title = 'Estudiantes de carreras de exactas en universidades \n de toda la Argentina', x='',y='', color= ' ',
+   labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas', x='',y='', color= ' ',
         subtitle ="Para el período 2010-2015" , 
         caption = "DataSource: Chicas en tecnología") +
-   theme_ipsum_tw()#
+   theme_ipsum_tw() +
+    theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+          plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                    family ="Garamond",    
+                                    hjust = 0,vjust = 1,
+                                    colour = "#2c204d", 
+                                    face = 'bold', 
+                                    margin = margin(b = 12 * 1.2)),
+          legend.position="  ", legend.text= element_text(color="#2c204d", 
+                                                          size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+ 
+ 
+ ggsave(here("grafico_prom_facet.png"), height = 8, width = 10, units = "in", type='cairo')
+ 
+ #theme_ipsum_tw()#
+ 
  # con totales
- #opción 1
+ # opción 1
  ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
-   geom_line(size=2) +
-   scale_colour_manual(values= c("#713580", "#41b6a6"), labels= c('Mujeres', 'Hombres'))+
-   facet_wrap(~genero) +
-   labs(title = 'Estudiantes de carreras de exactas en universidades \n de toda la Argentina', x='',y='', color= ' ',
-        subtitle ="Para el período 2010-2015" , 
-        caption = "DataSource: Chicas en tecnología") +
-   theme_ipsum_tw()#
+    geom_line(size=2) +
+    scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
+    facet_wrap(~genero) +
+    labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas\n', x='',y='', color= ' ',
+         subtitle ="Para el período 2010-2015" , 
+         caption = "DataSource: Chicas en tecnología") +
+    labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas\n', x='',y='',fill= ' ',
+         subtitle ="Para el período 2010-2015" , 
+         caption = "DataSource: Chicas en tecnología") +
+    theme_ipsum_tw()+
+    theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+          plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                    family ="Garamond",    
+                                    hjust = 0,vjust = 1,
+                                    colour = "#2c204d", 
+                                    face = 'bold', 
+                                    margin = margin(b = 12 * 1.2)),
+          legend.position="  ", legend.text= element_text(color="#2c204d", 
+                                                          size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+ #theme_ipsum_tw()#
+ ggsave(here("grafico_total_facet.png"), height = 8, width = 10, units = "in", type='cairo')
+    
  
  #opcion2
  ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
-   geom_line(size=2) +
-   scale_colour_manual(values= c("#713580", "#41b6a6"), labels= c('Mujeres', 'Hombres'))+
-   facet_wrap(~genero, ncol=1, scales="free_y") +
-   labs(title = 'Estudiantes de carreras de exactas en universidades \n de toda la Argentina', x='',y='', color= ' ',
-        subtitle ="Para el período 2010-2015" , 
-        caption = "DataSource: Chicas en tecnología") +
-   theme_ipsum_tw()#
+    geom_line(size=2) +
+    scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
+    facet_wrap(~genero, ncol=1, scales="free_y") +
+    labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas', x='',y='', color= ' ',
+         subtitle ="Para el período 2010-2015" , 
+         caption = "DataSource: Chicas en tecnología") +
+    theme_ipsum_tw() +
+    theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+          plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                    family ="Garamond",    
+                                    hjust = 0,vjust = 1,
+                                    colour = "#2c204d", 
+                                    face = 'bold', 
+                                    margin = margin(b = 12 * 1.2)),
+          legend.position="  ", legend.text= element_text(color="#2c204d", 
+                                                          size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
  
- ggsave(here("grafico_lineas_Opcion2_estudiantes.png"), height = 8, width = 10, units = "in", type='cairo')
+ 
+ ggsave(here("grafico_total_facet2.png"), height = 8, width = 10, units = "in", type='cairo')
+ 
+ 
+ 
+ 
+ #opcion2_negro
+ ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
+    geom_line(size=2) +
+    scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
+    facet_wrap(~genero, ncol=1, scales="free_y") +
+    labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas', x='',y='', color= ' ',
+         subtitle ="Para el período 2010-2015" , 
+         caption = "DataSource: Chicas en tecnología") +
+    theme_ft_rc() +
+    theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+          plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                    family ="Garamond",    
+                                    hjust = 0,vjust = 1,
+                                    #colour = "#2c204d", 
+                                    face = 'bold', 
+                                    margin = margin(b = 12 * 1.2)),
+          legend.position="  ", legend.text= element_text(color="#2c204d", 
+                                                          size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+ 
+ 
+ ggsave(here("grafico_total_facet2_negro.png"), height = 8, width = 10, units = "in", type='cairo')
  
  
  
@@ -133,9 +269,56 @@ estudiantes_hombres_anio_nivelR <-programadoras %>% group_by(anio, nivel)%>% sum
  estudiantes_nivelR<-rbind(estudiantes_mujeres_anio_nivelR, estudiantes_hombres_anio_nivelR)
  view(estudiantes_nivelR)
  
- ggplot(data=estudiantes_nivelR, aes(x=anio, y=est_nivel, colour=nivel))+
+ # opción 1 facetado por niveles negro
+ 
+ ggplot(data=estudiantes_nivelR, aes(x=anio, y=est_nivel, colour=genero))+
    geom_line() +
-   facet_wrap(~genero) #, scales="free_y"
+   #facet_grid(anio ~ genero, space= 'free_y', scales = 'free_y') +
+    geom_line(size=2) +
+    scale_colour_manual(values= c("#a32ea2", "#d8d860"), labels= c('Mujeres', 'Hombres'))+
+   facet_wrap(~nivel, ncol=1, scales="free_y") +
+    labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas', x='',y='', color= ' ',
+         subtitle ="Para el período 2010-2015" , 
+         caption = "DataSource: Chicas en tecnología") +
+     theme_ft_rc() + 
+     theme(text = element_text(size=14, face = 'bold'),
+          plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                    family ="Garamond",    
+                                    hjust = 0,vjust = 1,
+                                    #colour = "#2c204d" 
+                                    face = 'bold', 
+                                    margin = margin(b = 12 * 1.2)),
+          legend.position="top", legend.text= element_text(size= 12, hjust = 0.5,vjust = 1))
+
+ ggsave(here("grafico_nivel_Facetnegro.png"), height = 8, width = 10, units = "in", type='cairo')
+ 
+ # opción 2 facetado
+ 
+ ggplot(data=estudiantes_nivelR, aes(x=anio, y=est_nivel, colour=genero))+
+    geom_line() +
+    #facet_grid(anio ~ genero, space= 'free_y', scales = 'free_y') +
+    geom_line(size=2) +
+    scale_colour_manual(values= c("#a32ea2", "#d8d860"), labels= c('Mujeres', 'Hombres'))+
+    facet_wrap(~nivel, ncol=1, scales="free_y") +
+    labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas', x='',y='', color= ' ',
+         subtitle ="Para el período 2010-2015" , 
+         caption = "DataSource: Chicas en tecnología") +
+    theme_ipsum_tw() + 
+    theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+          plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                    family ="Garamond",    
+                                    hjust = 0,vjust = 1,
+                                    colour = "#2c204d", 
+                                    face = 'bold', 
+                                    margin = margin(b = 12 * 1.2)),
+          legend.position="top", legend.text= element_text(size= 12, hjust = 0.5,vjust = 1, color = "#2c204d"))
+ 
+ ggsave(here("grafico_nivel_Facetclaro.png"), height = 8, width = 10, units = "in", type='cairo')
+ 
+ 
+ 
+ 
+   #facet_wrap(~genero) #, scales="free_y"
    
  #quiero filtrar por nivel y no puedo
 # solo_grado<-estudiantes_nivelR %>% filter(nivel=='Grado')
@@ -213,8 +396,82 @@ estudiantes_hombres_anio_nivelR <-programadoras %>% group_by(anio, nivel)%>% sum
  ggplot(data=reinscriptos_nivelR, aes(x=anio, y=reins_nivel, colour=nivel))+
    geom_line() +
    facet_wrap(~genero)
-################################################################
+ 
+ 
+----------------------------------------------
+# EGRESADOS
+#----------------------------------------------
+ 
+ ----------------------------------------------
+# cantidad total de egresados hombres y mujeres
+#-----------------------------------------------
+ mujeres_egresadas<- programadoras%>%group_by(anio)%>% summarise(egresades= sum(egMujeres), total=sum(egMujeres, egVarones), prom=(round(mean(egMujeres),0)))%>% mutate(genero='Mujeres') 
+ View(mujeres_egresadas)
+ hombres_egresados<- programadoras%>%group_by(anio)%>% summarise(egresades= sum(egVarones), total=sum(egMujeres, egVarones), prom=(round(mean(egVarones),0)))%>% mutate(genero='Hombres')
+ View(hombres_egresados)
+ 
+ 
+ egresades_anio<-rbind(mujeres_egresadas, hombres_egresados)
+ view(egresades_anio)
+ 
+ # gráfico barras contiguas paradas
+ library(hrbrthemes)
+ hrbrthemes::import_titillium_web()
+ # estudiantes_R_bar<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(total))
+ # view(estudiantes_R_bar)
+ 
+ ggplot(data=egresades_anio, aes(x=anio, y=egresades, fill=genero))+
+    geom_bar(stat= "identity", position = "dodge", width= .8, color= "black")+
+    #coord_flip()+
+    scale_fill_manual(values= c("#d8d860","#a32ea2"), labels= c('Hombres', 'Mujeres'))+  #amarillo claro:#f1fa8c  verde:#41b6a6 lilaoscuro:#713580 
+    #scale_x_discrete(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c('2010', '2011', '2012','2013', '2014','2015'))+
+    #geom_text(aes(label=total), size=2)+
+    labs(title = 'Egresados de Carreras Exactas de Universidades Argentinas\n', x='',y='',fill= ' ',
+         subtitle ="Para el período 2010-2015" , 
+         caption = "DataSource: Chicas en tecnología") +
+    theme_ipsum_tw()+
+    theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+          plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                    # family ="Garamond",    
+                                    hjust = 0,vjust = 1,
+                                    colour = "#2c204d", 
+                                    face = 'bold', 
+                                    margin = margin(b = 12 * 1.2)),
+          legend.position="bottom",legend.text= element_text(color="#2c204d", 
+                                                             size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+ #theme_ipsum_tw()
+ #theme_ft_rc()
+ # para theme negro:theme_ft_rc() 
+ ggsave(here("barras_egresades.png"), height = 8, width = 10, units = "in", type='cairo')
+ 
+ 
+ ggplot(data=egresades_anio, aes(x=anio, y=egresades, color=genero))+
+    geom_line(size=2) +
+    scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres')) +
+    facet_wrap(~genero) +
+    labs(title = 'Egresados  de Carreras Exactas de Universidades Argentinas\n', x='',y='', color= ' ',
+         subtitle ="Para el período 2010-2015" , 
+         caption = "DataSource: Chicas en tecnología") +
+    theme_ipsum_tw()+
+    theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+          plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                    family ="Garamond",    
+                                    hjust = 0,vjust = 1,
+                                    colour = "#2c204d", 
+                                    face = 'bold', 
+                                    margin = margin(b = 12 * 1.2)),
+          legend.position="  ", legend.text= element_text(color="#2c204d", 
+                                                          size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
 
+ 
+  #theme_ipsum_tw()#
+ ggsave(here("grafico_egresados_lineas.png"), height = 8, width = 10, units = "in", type='cairo')
+ 
+ 
+ 
+ 
+ 
+ 
 ## GENERO
 
 mujeres=tapply(programadoras$estMujeres,programadoras$anio,sum)
