@@ -57,6 +57,13 @@ Gobierno de Santa Fe
 Informe sobre los  Usos de Tiempo y Brechas de Género en el Sistema Científico Tecnológico de Santa Fe, Argentina. 
 https://www.santafe.gov.ar/index.php/web/content/download/256973/1354275/file/Informe%20final.pdf
 
+ 
+#### Datasets públicos sobre género.
+Dataset sobre personas trabajando en ciencia y tecnología.
+https://datos.gob.ar/dataset/mincyt-personal-ciencia-tecnologia 
+
+Datos del Banco Mundial
+http://datatopics.worldbank.org/gender/
 
 ### Recursos para aprender visualización de datos con R
 https://github.com/PatriLoto/viz-datos-con-ggplot2-para-WIDS2020
@@ -77,14 +84,7 @@ Data Visualization in the Tidyverse por Alison Presmanes Hill
 Data Visualisation in R por Danielle Navarro
 Robust-tools: data visualization por Danielle Navarro
  
-#### Datos abiertos sobre género.
-Dataset sobre personas trabajando en ciencia y tecnología.
-https://datos.gob.ar/dataset/mincyt-personal-ciencia-tecnologia 
-
-Datos del Banco Mundial
-http://datatopics.worldbank.org/gender/ 
- 
-#### Otros recursor.
+#### Otros recursos.
 Guía para la elaboración de proyectos con perspectiva de género
 http://www.comunidadmujer.cl/biblioteca-publicaciones/wp-content/uploads/2018/06/GuiaProyectos_2018web_PP.pdf
 
