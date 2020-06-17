@@ -1,7 +1,7 @@
-# Listados de recursos útiles sobre visualizacion con perspectiva de genero
+## Listados de recursos útiles sobre visualizacion con perspectiva de genero
 
 
-Proyectos sobre datos y género
+### Proyectos sobre datos y género
 Chicas en Tecnología
 Relevamiento cuantitativo de Mujeres programadoras en Argentina durante 2010-20|5 (nuestra presentación se basa en esto)
 https://www.chicasentecnologia.org/investigacion
@@ -58,14 +58,14 @@ Informe sobre los  Usos de Tiempo y Brechas de Género en el Sistema Científico
 https://www.santafe.gov.ar/index.php/web/content/download/256973/1354275/file/Informe%20final.pdf
 
 
-Recursos para aprender visualización de datos con R
+### Recursos para aprender visualización de datos con R
 https://github.com/PatriLoto/viz-datos-con-ggplot2-para-WIDS2020
-Libros:
+#### Libros. 
 A Data Visualization: a practical introduction de Kieran Healy.
 Fundamentals of Data Visualization de Claus Wilke.
 R Graphics Cookbook: Practical Recipes for Visualizing Data de Winston Chang - Capítulo 1: Bar and line graphs.
 R para Ciencia de Datos de Hadley Wickham - Capítulo 3: Visualización de datos y Capítulo 28: Comunicar con gráficos.
-Sitios Webs.
+#### Sitios Webs.
 The R graph Gallery
 Highcharter
 From Data to Viz
@@ -77,14 +77,14 @@ Data Visualization in the Tidyverse por Alison Presmanes Hill
 Data Visualisation in R por Danielle Navarro
 Robust-tools: data visualization por Danielle Navarro
  
-Datos abiertos sobre género
+#### Datos abiertos sobre género.
 Dataset sobre personas trabajando en ciencia y tecnología.
 https://datos.gob.ar/dataset/mincyt-personal-ciencia-tecnologia 
 
 Datos del Banco Mundial
 http://datatopics.worldbank.org/gender/ 
  
-Otros recursos
+#### Otros recursor.
 Guía para la elaboración de proyectos con perspectiva de género
 http://www.comunidadmujer.cl/biblioteca-publicaciones/wp-content/uploads/2018/06/GuiaProyectos_2018web_PP.pdf
 
