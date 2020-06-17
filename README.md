@@ -1,4 +1,4 @@
-# Listados de recursos útiles sobre visualizacion_con_perspectiva_de_genero
+# Listados de recursos útiles sobre visualizacion con perspectiva de genero
 
 
 Proyectos sobre datos y género
