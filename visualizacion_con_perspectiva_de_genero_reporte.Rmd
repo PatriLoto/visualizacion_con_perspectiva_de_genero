@@ -66,3 +66,12 @@ Podés descargarlo de [aquí](https://www.chicasentecnologia.org/)
 
 ```
 
+
+# Cantidad de estudiantes, ingresantes y egresados por año
+## gráfico de barras y líneas
+
+
+# Cantidad de estudiantes, ingresantes y egresados por año y gestión (pública y privada)
+
+
+# Cantidad de estudiantes, ingresantes y egresados mujeres  por año y carrera
