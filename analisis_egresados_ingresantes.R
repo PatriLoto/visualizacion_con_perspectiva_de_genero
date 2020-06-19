@@ -2,6 +2,12 @@
 #setwd("D:/R ladies/MujeresPrograman
 library("here")
 library("tidyverse")
+library(ggthemes)
+#library(scales)
+library(knitr)
+library(ggalt)
+library(kableExtra)
+library(formattable)
 #setwd("D:/Charla_visualizacion_con__perspectiva_de_genero/mujeres_en_tecnologia")
 # Lectura de los datos
 programadoras <- read.csv(file = "D:/CURSOS_DICTADOS_con_R_2020/visualizacion_con_perspectiva_de_genero/datos/programadorasnew.csv",header = TRUE)
@@ -39,14 +45,100 @@ View(mujeres_anio)
 hombres_anio<- programadoras%>%group_by(anio)%>% summarise(total= sum(estVarones), tot=sum(estMujeres, estVarones), prom=(round(mean(estVarones),0)))%>% mutate(genero='Hombres')
 View(hombres_anio)
 
+
+
+-------------------------------------------
+
+formato_porc <- function(numero, dec = 1){
+  format(round(numero, digits = dec), nsmall = dec, decimal.mark = ",")
+}
+
+
+mujeres_est<- programadoras%>% filter(anio==2015) %>% group_by(institucion)%>% summarise(totalM= sum(estMujeres),totalV= sum(estVarones), tot=sum(estMujeres, estVarones), prom=(round(mean(estMujeres),0)))%>% 
+ mutate(brecha = paste0(formato_porc((totalV-totalM)/totalV*100), "%"), medio = (totalV+totalM)/2)
+View(mujeres_est)
+
+# hombres_anio<- programadoras%>%group_by(anio)%>% summarise(total= sum(estVarones), totalV= sum(estVarones), tot=sum(estMujeres, estVarones), prom=(round(mean(estVarones),0)))
+# %>% mutate(brecha = paste0(formato_porc((totalV-totalM)/totalV*100), "%"))
+# View(hombres_anio)
+
+mas_mujeres_est <- mujeres_est %>% top_n(10) %>% arrange(brecha)
+view(mas_mujeres_est)
+
+kable(mas_mujeres_est, align = "r") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "center")
+
+
+
+
+# prueba dumbble
+colores = c("#a32ea2","#d8d860") #fct_reorder(name, desc(val))
+ggplot(mas_mujeres_est, aes(x = totalM, xend = totalV, y =reorder(institucion,(totalV)), group = institucion, label = brecha)) +
+  geom_dumbbell(color= "#808080",
+                size_x = 3, size_xend = 3,
+                colour_x = colores[1],
+                colour_xend = colores[2]) +
+  #geom_text(aes(label = brecha), nudge_y = .2)+
+  geom_text(aes(medio, institucion, label = brecha), nudge_y = .2)+
+  labs(x="Cantidad de estudiantes",
+       y=NULL, 
+       caption = "Fuente: Elaboración propia en base a datos de chicas en tecnología")+
+  scale_color_manual(values= colores)+
+  theme_minimal()
+
+# datos 2015
+mujeres_ing<- programadoras%>% filter(anio==2015) %>% group_by(institucion)%>% summarise(totalIngM= sum(niMujeres),totalIngV= sum(niVarones), totalIng=sum(niMujeres, niVarones), promIn=(round(mean(niMujeres),0)))%>% 
+  mutate(brecha = paste0(formato_porc((totalIngV-totalIngM)/totalIngV*100), "%"), medio = (totalIngM/2))
+view(mujeres_ing)
+ingresantes <- mujeres_ing %>% top_n(10, totalIngM) %>% mutate(institucion = fct_reorder(institucion, (totalIngM)))
+view(ingresantes) # para 2015
+
+
+# grafico lollipop
+ggplot(ingresantes,aes(x=institucion, y =totalIngM, group = institucion), label = totalIngM) +
+  geom_segment(aes(xend=institucion, yend=0), colour="#e3e4e5") +
+  geom_point(size=4, color="#a32ea2") +
+  geom_text (data =ingresantes, aes(institucion, medio,  label = totalIngM), vjust = - 0.5,  nudge_y = .1) +
+  coord_flip() +
+ labs(title = 'Universidades Argentinas con mayor número de inscriptas \n mujeres', x='',y='', color=" ",
+       subtitle ="Para el año 2015" , 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme_ft_rc() +
+  theme(text = element_text(size=14, face = 'bold'),
+        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                  # family ="Garamond",    
+                                  hjust = 0,vjust = 1,
+                                  #colour = "#2c204d", 
+                                  face = 'bold', 
+                                  margin = margin(b = 12 * 1.2)),
+                                  legend.position="bottom",
+                                  legend.text= element_text(color="#2c204d", 
+                                size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+
+
+ggsave(here("lollipop.png"), height = 8, width = 12, units = "in", type='cairo')
+
+#theme_ipsum_tw()
+#theme_ft_rc()
+#---------------------------------------------------------------------
 # gráfico barras contiguas paradas
 library(hrbrthemes)
 hrbrthemes::import_titillium_web()
-estudiantes_R_bar<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(total))
+estudiantes_R_estudiantes_R_barbar<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(total))
 view(estudiantes_R_bar)
+# # sale feo el gráfico de violin
+# ggplot(data=estudiantes_R_bar, aes(x=genero, y=total, fill=genero)) + 
+#   geom_violin() +
+#   xlab("class") +
+#   theme(legend.position="none") +
+#   xlab("")
+#  # facet_wrap((~anio))
+# ggsave(here("violin.png"), height = 8, width = 10, units = "in", type='cairo')
+# 
+
 
 ggplot(data=estudiantes_R_bar, aes(x=anio, y=total,fill=genero))+
-  geom_bar(stat= "identity", position = "dodge", width= .8, color= "black")+
+  geom_bar(stat= "identity", position = "identity", width= .8, color= "black")+
   #coord_flip()+
   scale_fill_manual(values= c("#d8d860","#a32ea2"), labels= c('Hombres', 'Mujeres'))+  #amarillo claro:#f1fa8c  verde:#41b6a6 lilaoscuro:#713580 
   #scale_x_discrete(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c('2010', '2011', '2012','2013', '2014','2015'))+
