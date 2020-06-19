@@ -56,9 +56,9 @@
 
 ### Datasets públicos sobre género.
 
--- [Dataset sobre personas trabajando en ciencia y tecnología.](https://datos.gob.ar/dataset/mincyt-personal-ciencia-tecnologia)
+- [Dataset sobre personas trabajando en ciencia y tecnología.](https://datos.gob.ar/dataset/mincyt-personal-ciencia-tecnologia)
 
--- [Datos del Banco Mundial](http://datatopics.worldbank.org/gender/)
+- [Datos del Banco Mundial](http://datatopics.worldbank.org/gender/)
 
 ### [Recursos para aprender visualización de datos con R](https://github.com/PatriLoto/viz-datos-con-ggplot2-para-WIDS2020)
 
