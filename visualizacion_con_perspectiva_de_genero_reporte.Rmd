@@ -1,0 +1,68 @@
+---
+title: "Visualización con perspectiva de género"
+author: "R-Ladies Resistencia Corrientes y Observatorio de Género"
+date: "19/6/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Dataset de Mujeres Programadores en Argentina.
+
+
+Los datos que se utilizaron para esta presentación son datos públicados por [Chicas en tecnología](https://www.chicasentecnologia.org/) como resultado de un relevamiento cuantitativo de Mujeres Programadoras en Argentina realizado por esta ONG, y comprenden datos de 73 carreras relacionadas con Programación de más de 80 universidades e institutos universitarios de todo el país.
+
+Si querés conocer más sobre cómo fueron relevados y sistematizados los datos podes acceder al [repositorio de Chicas en Tecnología.](https://github.com/chicasentec/mujeres-programadoras-argentina) 
+
+
+El archivo con la base completa de carreras relevadas cuenta de 20 columnas:
+
+
+| Campo               | Descripción                                                                                                                                                                                              |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Año                 | año de los datos.                                                                                                                                                                                        |
+| Tipo de institución | es la categoría de institución educativa (puede ser universidad o instituto).                                                                                                                            |
+| Institución         | nombre de la universidad o instituto.                                                                                                                                                                    |
+| Carrera             | agrupamiento por tipo de carrera. En el caso de la base segmentada, pueden ser dos: ingeniería en sistemas o Computación, Sistemas e Informática.                                                        |
+| Título              | nombre de la carrera universitaria relevada. Con la finalidad de promover el lenguaje inclusivo se realizaron algunas modificaciones. Por ejemplo: la palabra “Licenciado” se cambió por “Licenciatura”. |
+| Gestión             | puede ser pública o privada.                                                                                                                                                                             |
+| Nivel de la oferta  | pregrado o grado                                                                                 
+| Total de estudiantes| suma de estudiantes varones y estudiantes mujeres.|
+|Estudiantes varones| cantidad de estudiantes varones para esa oferta, en el año indicado en la fila.|
+|Estudiantes mujeres| cantidad de estudiantes mujeres para esa oferta en el año indicado en la fila|
+|Total de nuevos inscriptos| suma de nuevos inscriptos varones e inscriptas mujeres que ingresan por primera vez a la universidad o instituto.|
+|Nuevos inscriptos varones| cantidad de nuevos ingresantes varones.|
+|Nuevas inscriptas mujeres| cantidad de nuevas ingresantes mujeres.|
+|Total reinscriptos| suma de reinscriptos varones y reinscriptas mujeres.|
+|Reinscriptos varones| cantidad de reinscriptos varones para esa oferta.|
+|Reinscriptas mujeres| cantidad de reinscriptas mujeres para esa oferta.|
+|Total de egresados| suma de egresados varones y egresadas mujeres.|
+|Egresados varones| cantidad de egresados varones para un título determinado.|
+|Egresadas mujeres| cantidad de egresadas mujeres para un título determinado.|
+
+Podés descargarlo de [aquí](https://www.chicasentecnologia.org/)
+
+# Lectura del dataset
+
+```{r}
+
+```
+
+
+# Procesamiento de los datos
+
+
+```{r}
+
+```
+
+
+# Visualización de datos
+
+```{r}
+
+```
+
