@@ -1,29 +1,31 @@
-## Listados de recursos útiles sobre visualizacion con perspectiva de genero
+# Desmitificando los datos: Visualización desde la Ciencia de Datos con Perspectiva de Género
+
+**Charla realizada entre R-Ladies Resistencia-Corrientes y el Observatorio de Género**
+
+
+## Listados de recursos útiles sobre visualización con perspectiva de género
 
 
 ### Proyectos sobre datos y género
-Chicas en Tecnología
-Relevamiento cuantitativo de Mujeres programadoras en Argentina durante 2010-20|5 (nuestra presentación se basa en esto)
-https://www.chicasentecnologia.org/investigacion
-https://github.com/chicasentec/mujeres-programadoras-argentina
 
-Algunas consideraciones sobre los datos
-https://mujeres-programadoras.chicasentecnologia.org/consideraciones.html
+* [Chicas en Tecnología](https://www.chicasentecnologia.org/)
 
-Nota respecto a esto: https://www.infobae.com/def/desarrollo/2018/09/08/chicas-en-tecnologia-romper-con-la-brecha-de-genero/
+-- [Relevamiento cuantitativo de Mujeres programadoras en Argentina durante 2010-2015.](https://github.com/chicasentec/mujeres-programadoras-argentina) (nuestra presentación se basa en esto) 
 
-Relevamiento cuantitativo de Mujeres en STEM en Argentina durante 2010-2016
-(INCLUYE POSGRADO)
-https://github.com/chicasentec/masdatos/
+-- [Relevamientos e investigaciones de temas que contribuyen a cerrar la brecha de género en tecnología.](https://www.chicasentecnologia.org/investigacion) 
 
-Menos mitos, más datos
-https://proyectos.chicasentecnologia.org/masdatos/
+[Consideraciones sobre los datos.](https://mujeres-programadoras.chicasentecnologia.org/consideraciones.html)
 
-Infografía
-https://proyectos.chicasentecnologia.org/masdatos/infografia.pdf
+-- [Nota publicada en Infobae](https://www.infobae.com/def/desarrollo/2018/09/08/chicas-en-tecnologia-romper-con-la-brecha-de-genero/)
 
-Información, orientaciones y actividades para cerrar la brecha de género
-https://github.com/chicasentec/masdatos/blob/master/toolkit.pdf
+-- [Relevamiento cuantitativo de Mujeres en STEM en Argentina durante 2010-2016 (INCLUYE POSGRADO)](https://github.com/chicasentec/masdatos/)
+
+-- [Menos mitos, más datos](https://proyectos.chicasentecnologia.org/masdatos/)
+
+-- [Infografía sobre mujeres en STEM](https://proyectos.chicasentecnologia.org/masdatos/infografia.pdf)
+
+-- [Información, orientaciones y actividades para cerrar la brecha de género](https://github.com/chicasentec/masdatos/blob/master/toolkit.pdf)
+
 
 Economía Feminista
 
