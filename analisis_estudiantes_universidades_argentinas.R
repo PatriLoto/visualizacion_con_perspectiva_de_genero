@@ -329,9 +329,10 @@ ggsave(here("GESTION_lineas_1_A.png"), height = 8, width = 10, units = "in", typ
 ggplot(data= estudiantes_R_gestion, aes(x= anio, y= totalgeneroxG, color= genero)) +
   geom_line(size=2) +
   #scale_fill_manual(values= c("#d8d860","#a32ea2")) + #labels= c('Hombres', 'Mujeres')+
-  facet_grid(gestion ~ genero,  scales = 'free_y') + 
-  scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
-  labs(title = 'Estudiantes de carreras relacionadas con programación de Universidades \nArgentinas por tipo de Gestión\n', x='',y='Cantidad',fill= ' ',
+  #facet_grid(gestion ~ genero,  scales = 'free_y') + 
+  facet_wrap(~ gestion) +
+  scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c( 'Hombres', 'Mujeres'))+
+  labs(title = 'Estudiantes de carreras relacionadas con programación de Universidades \nArgentinas por tipo de Gestión\n', x='',y='Cantidad',fill= ' ',color='',
        subtitle ="Para el período 2010-2015" , 
        caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
   theme_ft_rc() +
@@ -342,10 +343,11 @@ ggplot(data= estudiantes_R_gestion, aes(x= anio, y= totalgeneroxG, color= genero
                                   #colour = "#2c204d", 
                                   face = 'bold', 
                                   margin = margin(b = 12 * 1.2)),
-        legend.position="  ", legend.text= element_text(color="#2c204d", 
+        legend.position="bottom", legend.text= element_text(color="grey", 
                                                         size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
 
-ggsave(here("GESTION_lineas_1_B.png"), height = 8, width = 10, units = "in", type='cairo')
+
+ggsave(here("GESTION_lineas_1_B_facet_wrap.png"), height = 8, width = 10, units = "in", type='cairo')
 
 
 
