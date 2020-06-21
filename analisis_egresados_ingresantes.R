@@ -235,56 +235,58 @@ ggplot(data=estudiantes_R_flip, aes(x=anio, y=total,fill=genero))+
 #theme_ipsum_tw()
 ggsave(here("grafico_barras_nuevos_colores_flip.png"), height = 8, width = 10, units = "in", type='cairo')
 
-
-# graficos de líneas con promedios facet por género
+#----------------------------------------------------------------------------------------------------
+# FUNCIONA
+# graficos de líneas con promedios 
 estudiantes_R<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(anio,total))
 view(estudiantes_R)
-# con promedios
+
+
+# Gráfico de lineas con promedios por estudiantes por año CON facet por género
 ggplot(data=estudiantes_R, aes(x=anio, y=prom, color=genero))+
   geom_line(size=2) +
   scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
-  facet_wrap(~genero) +
-  labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas\n', x='',y='', color= ' ',
+  facet_grid(~genero) +  #uno al lado del otro
+  labs(title = 'Estudiantes de carreras relacionadas con Programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
        subtitle ="Para el período 2010-2015" , 
-       caption = "DataSource: Chicas en tecnología") +
-  labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas\n', x='',y='',fill= ' ',
-       subtitle ="Para el período 2010-2015" , 
-       caption = "DataSource: Chicas en tecnología") +
-  theme_ipsum_tw()+
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  #theme_ipsum_tw()
+  theme_ft_rc() +
   theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
         plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
                                   family ="Garamond",    
                                   hjust = 0,vjust = 1,
-                                  colour = "#2c204d", 
+                                  #colour = "#2c204d", 
                                   face = 'bold', 
                                   margin = margin(b = 12 * 1.2)),
         legend.position="  ", legend.text= element_text(color="#2c204d", 
                                                         size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
 #theme_ipsum_tw()#
 
-ggsave(here("grafico_prom_est.png"), height = 8, width = 10, units = "in", type='cairo')
+ggsave(here("grafico_prom_estud.png"), height = 8, width = 10, units = "in", type='cairo')
 
 #opcion 2
+# Gráfico de líneas con prom. de estudiantes por género
 ggplot(data=estudiantes_R, aes(x=anio, y=prom, color=genero))+
   geom_line(size=2) +
   scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
-  facet_wrap(~genero, ncol=1, scales="free_y") +
-  labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas', x='',y='', color= ' ',
+  facet_wrap(~genero, ncol=1) +  #scales="free_y"  #uno arriba del otro
+  labs(title = 'Estudiantes de carreras relacionadas con Programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
        subtitle ="Para el período 2010-2015" , 
-       caption = "DataSource: Chicas en tecnología") +
-  theme_ipsum_tw() +
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme_ft_rc() +
   theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
         plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
                                   family ="Garamond",    
                                   hjust = 0,vjust = 1,
-                                  colour = "#2c204d", 
+                                  #colour = "#2c204d", 
                                   face = 'bold', 
                                   margin = margin(b = 12 * 1.2)),
         legend.position="  ", legend.text= element_text(color="#2c204d", 
                                                         size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
 
 
-ggsave(here("grafico_prom_facet.png"), height = 8, width = 10, units = "in", type='cairo')
+ggsave(here("grafico_prom_estud_wrap.png"), height = 8, width = 10, units = "in", type='cairo')
 
 #theme_ipsum_tw()#
 
@@ -294,18 +296,15 @@ ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
   geom_line(size=2) +
   scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
   facet_wrap(~genero) +
-  labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas\n', x='',y='', color= ' ',
+  labs(title = 'Estudiantes de carreras relacionadas con Programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
        subtitle ="Para el período 2010-2015" , 
-       caption = "DataSource: Chicas en tecnología") +
-  labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas\n', x='',y='',fill= ' ',
-       subtitle ="Para el período 2010-2015" , 
-       caption = "DataSource: Chicas en tecnología") +
-  theme_ipsum_tw()+
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme_ft_rc() +
   theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
         plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
                                   family ="Garamond",    
                                   hjust = 0,vjust = 1,
-                                  colour = "#2c204d", 
+                                  #colour = "#2c204d", 
                                   face = 'bold', 
                                   margin = margin(b = 12 * 1.2)),
         legend.position="  ", legend.text= element_text(color="#2c204d", 
