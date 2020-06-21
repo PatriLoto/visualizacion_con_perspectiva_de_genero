@@ -126,16 +126,16 @@ ggsave(here("lollipop.png"), height = 8, width = 12, units = "in", type='cairo')
 # gráfico barras contiguas paradas
 library(hrbrthemes)
 hrbrthemes::import_titillium_web()
-estudiantes_R_barra<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(total))
+estudiantes_R_barra<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(totalgenero))
 view(estudiantes_R_barra)
 # grafico de barras con percentajes
-ggplot(data=estudiantes_R_barra, aes(x=anio, y=total,fill=genero))+
-  geom_bar(stat= "identity", position = "identity", width= .8, color= "black")+
+ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill=genero))+
+  geom_bar(stat= "count", position = "identity", width= .8, color= "black")+
   #coord_flip()+
   scale_fill_manual(values= c("#d8d860","#a32ea2"), labels= c('Hombres', 'Mujeres'))+  #amarillo claro:#f1fa8c  verde:#41b6a6 lilaoscuro:#713580 
   #scale_x_discrete(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c('2010', '2011', '2012','2013', '2014','2015'))+
   #geom_text(aes(label=total), size=2)+
-  geom_text (data =estudiantes_R_barra, aes(anio, medio=(total/2),  label = paste0(porcen, "%")), color = "#2c204d", vjust = - 0.5,  nudge_y = .1) +
+  geom_text (data =estudiantes_R_barra, aes(anio, medio=(totalgenero/2),  label = paste0(porcen, "%")), color = "#2c204d", vjust = - 0.5,  nudge_y = .1) +
   labs(title = 'Estudiantes de carreras relacionadas con Programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
        subtitle ="Para el período 2010-2015" , 
        caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
