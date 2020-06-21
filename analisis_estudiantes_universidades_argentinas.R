@@ -156,8 +156,8 @@ hrbrthemes::import_titillium_web()
 estudiantes_R_barra<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(totalgenero))
 view(estudiantes_R_barra)
 
-
-# OPCIÓN 1: grafico de barras con cantidades FUNCIONA
+# FUNCIONA NO TOCAR
+# OPCIÓN 1.A CLARA: grafico de barras  CONTIGUAS con cantidades FUNCIONA
 ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill=genero))+
   geom_bar(stat= "identity", position = "dodge", width= .8, color= "black")+
   #coord_flip()+
@@ -182,14 +182,40 @@ ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill=genero))+
 ggsave(here("barras_contigua_arriba_2.png"), height = 8, width = 10, units = "in", type='cairo')
 
 #theme_ipsum_tw()
-#theme_ft_rc()
 # para theme negro:theme_ft_rc() 
 
-# BARRAS APILADAS:FUNCIONA NO TOCAR (VER TEMA DEL GEOM TEXT)
-
-# OPCIÓN 1: grafico de barras con cantidades funciona y con gext y etiquetas correctas
+# BARRAS APILADAS:FUNCIONA NO TOCAR 
+# OPCIÓN 2.A: OSCURA grafico de barras con PORCENTAJES funciona y con gext y etiquetas correctas
 ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill= genero)) +
-  geom_bar(stat= "identity", position = "stack", width= .8, color= "black")+
+  geom_bar(stat= "identity", position = "stack", width= .7, color= "black")+
+  #coord_flip()+
+  scale_fill_manual(values= c("#d8d860","#a32ea2"), labels= c('Hombres', 'Mujeres'))+  #amarillo claro:#f1fa8c  verde:#41b6a6 lilaoscuro:#713580 
+  scale_x_continuous(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c('2010', '2011', '2012','2013', '2014','2015')) +
+  geom_text(aes (label = paste0(porcen, "%")), position = position_stack(vjust=0.5), size=4, color="#2c204d") +
+  #geom_text (data =estudiantes_R_barra, aes(anio, medio=(totalgenero/2),label = paste0(totalgenero)), size=3, color = "#2c204d", vjust = - 0.7,  nudge_y = .1) +
+  labs(title = 'Estudiantes de carreras relacionadas con programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
+       subtitle ="Para el período 2010-2015" , 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme_ft_rc() +
+  #theme_ipsum_tw()+
+  theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                  # family ="Garamond",    
+                                  hjust = 0,vjust = 1,
+                                  #colour = "#2c204d", 
+                                  face = 'bold', 
+                                  margin = margin(b = 12 * 1.2)),
+        legend.position="bottom",legend.text= element_text(color="grey", 
+                                                           size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+
+
+ggsave(here("barras_apiladas_PORCEN_OSCURO_final2_a.png"), height = 8, width = 10, units = "in", type='cairo')
+#ggsave(here("barras_apiladas_cant_final2.png"), height = 8, width = 10, units = "in", type='cairo')
+
+
+# OPCIÓN 2.B: OSCURA grafico de barras con CANTIDADES funciona y con gext y etiquetas correctas
+ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill= genero)) +
+  geom_bar(stat= "identity", position = "stack", width= .7, color= "black")+
   #coord_flip()+
   scale_fill_manual(values= c("#d8d860","#a32ea2"), labels= c('Hombres', 'Mujeres'))+  #amarillo claro:#f1fa8c  verde:#41b6a6 lilaoscuro:#713580 
   scale_x_continuous(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c('2010', '2011', '2012','2013', '2014','2015')) +
@@ -211,55 +237,120 @@ ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill= genero)) +
                                                            size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
 
 
-ggsave(here("barras_apiladas_cant_final.png"), height = 8, width = 10, units = "in", type='cairo')
+ggsave(here("barras_apiladas_cant_OSCURO_final2_B.png"), height = 8, width = 10, units = "in", type='cairo')
+#ggsave(here("barras_apiladas_cant_final2.png"), height = 8, width = 10, units = "in", type='cairo')
 
 
 
 
 
 
-ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero,  fill=genero))+
-  geom_bar(stat= "identity", position = "stack", width= .8, color= "black")+
-  #coord_flip()+
-  scale_fill_manual(values= c("#d8d860","#a32ea2"), labels= c('Hombres', 'Mujeres'))+  #amarillo claro:#f1fa8c  verde:#41b6a6 lilaoscuro:#713580 
-  #scale_x_discrete(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c('2010', '2011', '2012','2013', '2014','2015'))+
-  #geom_text(aes(label=total), size=2)+
-  geom_text (data =estudiantes_R_barra, aes(anio, medio=(totalgenero/2),  label = paste0(porcen, "%")), color = "#2c204d", vjust = - 0.5,  nudge_y = .1) +
-  labs(title = 'Estudiantes de carreras relacionadas con Programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# cantidad de ESTUDIANTES mujeres agrupadas por GESTION para el AÑO 2015
+  
+mujeres_est_gestion<- programadoras %>% group_by(anio, gestion) %>%
+  summarise(totalgeneroxG = sum(estMujeres), totalxG= sum(estMujeres, estVarones), promxG=(round(mean(estMujeres),0)),
+           porcengeneroxG = round(totalgeneroxG/totalxG * 100)) %>% mutate(genero='Mujeres')
+View(mujeres_est_gestion)
+hombres_est_gestion<- programadoras %>% group_by(anio, gestion) %>%
+  summarise(totalgeneroxG = sum(estVarones), totalxG= sum(estMujeres, estVarones), promxG=(round(mean(estVarones),0)),
+            porcengeneroxG = round(totalgeneroxG/totalxG * 100)) %>% mutate(genero='Hombres') 
+View(hombres_est_gestion)
+
+
+estudiantes_R_gestion<-rbind(mujeres_est_gestion, hombres_est_gestion)%>% arrange((anio, gestion, totalgeneroxG))
+view(estudiantes_R_gestion)
+
+# %>% mutate(brechaxG = paste0(formato_porc((totalVxG - totalMxG)/totalVxG * 100), "%"), medio = (totalVxG + totalMxG)/2)
+
+# totalVxG = sum(estVarones),
+# porcenVxG=round(totalVxG/totalxG * 100))
+
+
+#---------------------------------------------------------------------
+# gráfico barras contiguas paradas
+# library(hrbrthemes)
+# hrbrthemes::import_titillium_web()
+# 
+# 
+# ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero,  fill=genero))+
+#   geom_bar(stat= "identity", position = "stack", width= .8, color= "black")+
+#   #coord_flip()+
+#   scale_fill_manual(values= c("#d8d860","#a32ea2"), labels= c('Hombres', 'Mujeres'))+  #amarillo claro:#f1fa8c  verde:#41b6a6 lilaoscuro:#713580 
+#   #scale_x_discrete(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c('2010', '2011', '2012','2013', '2014','2015'))+
+#   #geom_text(aes(label=total), size=2)+
+#   geom_text (data =estudiantes_R_barra, aes(anio, medio=(totalgenero/2),  label = paste0(porcen, "%")), color = "#2c204d", vjust = - 0.5,  nudge_y = .1) +
+#   labs(title = 'Estudiantes de carreras relacionadas con Programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
+#        subtitle ="Para el período 2010-2015" , 
+#        caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+#   theme_ipsum_tw()+
+#   theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+#         plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+#                                   # family ="Garamond",    
+#                                   hjust = 0,vjust = 1,
+#                                   colour = "#2c204d", 
+#                                   face = 'bold', 
+#                                   margin = margin(b = 12 * 1.2)),
+#         legend.position="bottom",legend.text= element_text(color="#2c204d", 
+#                                                            size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+# 
+
+ggsave(here("barras_stACK.png"), height = 8, width = 10, units = "in", type='cairo')
+
+
+# GRAFICOS DE LINEAS
+# OPCION 1: A CLARA
+# gráfico CANTIDAD de estudiantes por GENERO y GESTION 
+ggplot(data= estudiantes_R_gestion, aes(x= anio, y= totalgeneroxG, color= genero)) +
+   geom_line(size=2) +
+   #scale_fill_manual(values= c("#d8d860","#a32ea2")) + #labels= c('Hombres', 'Mujeres')+
+   facet_grid(gestion ~ genero,  scales = 'free_y') + 
+   scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
+   labs(title = 'Estudiantes de carreras relacionadas con Programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
        subtitle ="Para el período 2010-2015" , 
        caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-  theme_ipsum_tw()+
-  theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+   theme_ipsum_tw() +
+   theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
         plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
-                                  # family ="Garamond",    
+                                  family ="Garamond",    
                                   hjust = 0,vjust = 1,
                                   colour = "#2c204d", 
                                   face = 'bold', 
                                   margin = margin(b = 12 * 1.2)),
-        legend.position="bottom",legend.text= element_text(color="#2c204d", 
-                                                           size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
-
-                                                                                                               
-ggsave(here("barras_stACK.png"), height = 8, width = 10, units = "in", type='cairo')
+        legend.position="  ", legend.text= element_text(color="#2c204d", 
+                                                        size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
 
 
-#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# cantidad de ESTUDIANTES mujeres agrupadas por institución para el AÑO 2015
-  
-mujeres_est_gestion<- programadoras %>% group_by(anio, gestion) %>%
-  summarise(totalMxG = sum(estMujeres),totalVxG = sum(estVarones), totalxG= sum(estMujeres, estVarones), promxG=(round(mean(estMujeres),0)),
-           porcenMxG = round(totalMxG/totalxG * 100), porcenVxG=round(totalVxG/totalxG * 100)) %>% 
-  mutate(brechaxG = paste0(formato_porc((totalVxG - totalMxG)/totalVxG * 100), "%"), medio = (totalVxG + totalMxG)/2)
+ggsave(here("GESTION_lineas_1_A.png"), height = 8, width = 10, units = "in", type='cairo')
 
-View(mujeres_est_gestion)
+# GRAFICOS DE LINEAS
+# OPCION 2: B OSCURA
+# gráfico CANTIDAD de estudiantes por GENERO y GESTION 
+ggplot(data= estudiantes_R_gestion, aes(x= anio, y= totalgeneroxG, color= genero)) +
+  geom_line(size=2) +
+  #scale_fill_manual(values= c("#d8d860","#a32ea2")) + #labels= c('Hombres', 'Mujeres')+
+  facet_grid(gestion ~ genero,  scales = 'free_y') + 
+  scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
+  labs(title = 'Estudiantes de carreras relacionadas con programación de Universidades \nArgentinas por tipo de Gestión\n', x='',y='Cantidad',fill= ' ',
+       subtitle ="Para el período 2010-2015" , 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme_ft_rc() +
+  theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                  family ="Garamond",    
+                                  hjust = 0,vjust = 1,
+                                  #colour = "#2c204d", 
+                                  face = 'bold', 
+                                  margin = margin(b = 12 * 1.2)),
+        legend.position="  ", legend.text= element_text(color="#2c204d", 
+                                                        size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+
+ggsave(here("GESTION_lineas_1_B.png"), height = 8, width = 10, units = "in", type='cairo')
 
 
-# gráfico básico de barras
 
-ggplot(data= mujeres_est_gestion, aes(x= anio, y= totalVxG, fill= gestion)) +
-  geom_bar (stat= "identity", position = "dodge", width = .8, color = "black") +
-  scale_fill_manual(values= c("#d8d860","#a32ea2")) #labels= c('Hombres', 'Mujeres')
-#+
+
+
 
 # OPCIÓN 1: grafico de barras con cantidades funciona y con gext y etiquetas correctas
 ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill= genero)) +
