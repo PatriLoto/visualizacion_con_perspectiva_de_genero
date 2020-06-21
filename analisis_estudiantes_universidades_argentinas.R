@@ -193,22 +193,25 @@ ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill= genero)) +
   #coord_flip()+
   scale_fill_manual(values= c("#d8d860","#a32ea2"), labels= c('Hombres', 'Mujeres'))+  #amarillo claro:#f1fa8c  verde:#41b6a6 lilaoscuro:#713580 
   scale_x_continuous(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c('2010', '2011', '2012','2013', '2014','2015')) +
-  geom_text(aes(label=paste0(totalgenero)), position = position_stack(vjust=0.5), size=3) +
+  geom_text(aes(label=paste0(totalgenero)), position = position_stack(vjust=0.5), size=4, color="#2c204d") +
   #geom_text (data =estudiantes_R_barra, aes(anio, medio=(totalgenero/2),label = paste0(totalgenero)), size=3, color = "#2c204d", vjust = - 0.7,  nudge_y = .1) +
-  labs(title = 'Estudiantes de carreras relacionadas con Programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
+  labs(title = 'Estudiantes de carreras relacionadas con programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
        subtitle ="Para el período 2010-2015" , 
        caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-  theme_ipsum_tw()+
+  theme_ft_rc() +
+  #theme_ipsum_tw()+
   theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
         plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
                                   # family ="Garamond",    
                                   hjust = 0,vjust = 1,
-                                  colour = "#2c204d", 
+                                  #colour = "#2c204d", 
                                   face = 'bold', 
                                   margin = margin(b = 12 * 1.2)),
-        legend.position="bottom",legend.text= element_text(color="#2c204d", 
+        legend.position="bottom",legend.text= element_text(color="grey", 
                                                            size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
 
+
+ggsave(here("barras_apiladas_cant_final.png"), height = 8, width = 10, units = "in", type='cairo')
 
 
 
