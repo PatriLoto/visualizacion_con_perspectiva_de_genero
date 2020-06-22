@@ -287,16 +287,16 @@ ggplot(data=estudiantes_R, aes(x=anio, y=prom, color=genero))+
 
 
 ggsave(here("grafico_prom_estud_wrap.png"), height = 8, width = 10, units = "in", type='cairo')
+#-------------------------------------------------------------------------------------------------------------
 
-#theme_ipsum_tw()#
-
-# con totales
+# FUNCIONA
+# Gráfico con totales de estudiantes por género, escala real
 # opción 1
 ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
   geom_line(size=2) +
   scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
-  facet_wrap(~genero) +
-  labs(title = 'Estudiantes de carreras relacionadas con Programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
+  facet_wrap(~genero, ncol=1) +
+  labs(title = 'Estudiantes de carreras relacionadas con programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
        subtitle ="Para el período 2010-2015" , 
        caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
   theme_ft_rc() +
@@ -313,14 +313,14 @@ ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
 ggsave(here("grafico_total_facet.png"), height = 8, width = 10, units = "in", type='cairo')
 
 
-#opcion2
+#opcion2 negro: CON ESCALA FREE_Y, entonces cada gráfico tiene su propia escala
 ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
   geom_line(size=2) +
   scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
   facet_wrap(~genero, ncol=1, scales="free_y") +
-  labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas', x='',y='', color= ' ',
+  labs(title = 'Estudiantes de carreras relacionadas con programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
        subtitle ="Para el período 2010-2015" , 
-       caption = "DataSource: Chicas en tecnología") +
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
   theme_ipsum_tw() +
   theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
         plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
@@ -335,30 +335,7 @@ ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
 
 ggsave(here("grafico_total_facet2.png"), height = 8, width = 10, units = "in", type='cairo')
 
-
-
-
-#opcion2_negro
-ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
-  geom_line(size=2) +
-  scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
-  facet_wrap(~genero, ncol=1, scales="free_y") +
-  labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas', x='',y='', color= ' ',
-       subtitle ="Para el período 2010-2015" , 
-       caption = "DataSource: Chicas en tecnología") +
-  theme_ft_rc() +
-  theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
-        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
-                                  family ="Garamond",    
-                                  hjust = 0,vjust = 1,
-                                  #colour = "#2c204d", 
-                                  face = 'bold', 
-                                  margin = margin(b = 12 * 1.2)),
-        legend.position="  ", legend.text= element_text(color="#2c204d", 
-                                                        size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
-
-
-ggsave(here("grafico_total_facet2_negro.png"), height = 8, width = 10, units = "in", type='cairo')
+#-----------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -380,6 +357,8 @@ view(estudiantes_hombres_anio_nivelR)
 estudiantes_nivelR<-rbind(estudiantes_mujeres_anio_nivelR, estudiantes_hombres_anio_nivelR)
 view(estudiantes_nivelR)
 
+
+# FUNCIONA
 # opción 1 facetado por niveles negro
 
 ggplot(data=estudiantes_nivelR, aes(x=anio, y=est_nivel, colour=genero))+
@@ -387,10 +366,10 @@ ggplot(data=estudiantes_nivelR, aes(x=anio, y=est_nivel, colour=genero))+
   #facet_grid(anio ~ genero, space= 'free_y', scales = 'free_y') +
   geom_line(size=2) +
   scale_colour_manual(values= c("#a32ea2", "#d8d860"), labels= c('Mujeres', 'Hombres'))+
-  facet_wrap(~nivel, ncol=1, scales="free_y") +
-  labs(title = 'Estudiantes de Carreras Exactas de Universidades Argentinas', x='',y='', color= ' ',
+  facet_wrap(~nivel, ncol=1) + # scales="free_y"
+  labs(title = 'Estudiantes de carreras relacionadas con programación \n de Universidades Argentinas por tipo de nivel\n', x='',y='',color= ' ',
        subtitle ="Para el período 2010-2015" , 
-       caption = "DataSource: Chicas en tecnología") +
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
   theme_ft_rc() + 
   theme(text = element_text(size=14, face = 'bold'),
         plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
