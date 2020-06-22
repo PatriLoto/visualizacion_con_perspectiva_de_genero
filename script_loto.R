@@ -471,7 +471,7 @@ estudiantes_hombres_anio_nivelR <-programadoras %>% group_by(anio, nivel)%>% sum
  
  
  
- 
+ #----------------------------------------------------------------------
 ## GENERO
 
 mujeres=tapply(programadoras$estMujeres,programadoras$anio,sum)
