@@ -413,7 +413,8 @@ view(grupo_titulo)
 
 # ¿Cuáles son las carreras de las cuales egresan más Mujeres?
 # cantidad de TITULOS mujeres agrupadas por institución para el AÑO 2015
-
+#-------------------------------------------
+# ESTE UTILIZO PARA EL GRÁFICO
 titulos_mas_mujeres<- grupo_titulo %>% filter(anio==2015) %>% group_by(titulo_grupo)%>% summarise(totalEM= sum(egMujeres),totalEV= sum(egVarones), totalE=sum(egMujeres, egVarones), prom=(round(mean(egMujeres),0)),
                                                                                          porcenEM= (totalEM/totalE * 100), porcenEV=(totalEV/totalE * 100))%>% 
   mutate(brecha = paste0(formato_porc((totalEV-totalEM)/totalE *100), "%"), medio = (totalEV+totalEM)/2)
@@ -423,6 +424,8 @@ titulos_mas_MU<- grupo_titulo %>% group_by(anio, titulo_grupo)%>% summarise(tota
                                                                                                   porcenEM= round((totalEM/totalE * 100),2), porcenEV=round(totalEV/totalE * 100))%>% 
   mutate(brecha = paste0(formato_porc((totalEV-totalEM)/totalE *100), "%"), medio = (totalEV+totalEM)/2)
 View(titulos_mas_MU)
+
+#----------------------------------------
 
 # GRÁFICO LLOLIPOP FUNCIONO
 # egresadas según carrera para el año 2015
@@ -455,17 +458,51 @@ ggplot(titulos_mas_mujeres,aes(x= fct_reorder(titulo_grupo, totalEM), y = totalE
 #mayor_brecha <- mujeres_est %>% top_n(10) %>% arrange(brecha)
 #view(mayor_brecha)
 
-# GRÁFICO DE DONA  FUNCIONA LISTO!!!
+
+#---------------------------------------------------------
+# FUNCIONA LISTO NO TOCAR!!!
+# OPCIÓN D1: primer GRÁFICO DE DONA con CELESTE  
 #código gracias a pmoracho egresadas según carrera para el año 2015
 
-ggplot(titulos_mas_mujeres,aes(x=2, y=porcenEM, fill=titulo_grupo))+
+ggplot(titulos_mas_mujeres,aes(x=2, y= porcenEM, fill=titulo_grupo))+
   geom_bar(stat = "identity",color="white")+   ##2c204d
   coord_polar(theta="y") +
   theme_ft_rc() +
   xlim(0.5,2.5) +
-  geom_text(aes(label=percent(porcenEM/100), size= 4),
-            position=position_stack(vjust=0.5),color="#2c204d",size=6) +
-  scale_fill_manual(values= c("#41b6a6", "#f6e37c","#f5a26b","#51b8df","#713580"))+
+  geom_text(aes(label=percent(porcenEM/100)),  
+            position=position_stack(vjust=0.5),color="#2c204d",size= 6) +   #opcion1: size= 6
+  scale_fill_manual(values= c("#41b6a6", "#f6e37c","#f5a26b","#51b8df","#713580")) + #opción 1 de colores lila:#713580
+  #scale_fill_manual(values= c("#41b6a6", "#753180","#e95c74","#f5a26b","#f6e37c")) +  #opción 2: ,"#51b8df"  #9ccfb1:verde lila:#753180
+  labs(title = '¿Cuáles son las carreras relacionadas con \nprogramación con mayor porcentaje de egresadas?', x='',y='', fill=" ",
+       subtitle ="Para el año 2015 en Argentina", 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme(
+    plot.title = element_text(hjust = 0,vjust = 1),                    #cambiamos el tamaño, fuente y color del título
+    axis.title.x=element_blank(),
+    axis.text.x=element_blank(),
+    axis.ticks.x=element_blank(),
+    axis.title.y=element_blank(),
+    axis.text.y=element_blank(),
+    axis.ticks.y=element_blank(),
+    legend.position = "bottom") 
+
+
+ggsave(here("grafico_dona3colores.png"), height = 10, width = 12, units = "in", type='cairo')    #size: 6
+
+
+
+# OPCION D2: 
+# GRÁFICO DE DONA  FUNCIONA LISTO!!!
+#código gracias a pmoracho egresadas según carrera para el año 2015
+
+ggplot(titulos_mas_mujeres,aes(x=2, y= porcenEM, fill=titulo_grupo))+
+  geom_bar(stat = "identity",color="white")+   ##2c204d
+  coord_polar(theta="y") +
+  theme_ft_rc() +
+  xlim(0.5,2.5) +
+  geom_text(aes(label=percent(porcenEM/100)),  #opcion1: size= 6
+            position=position_stack(vjust=0.5),color="#2c204d",size= 8) +
+ scale_fill_manual(values= c("#41b6a6", "#753180","#e95c74","#f5a26b","#f6e37c")) +  #opción 2: ,"#51b8df"  #9ccfb1:verde lila:#753180
   labs(title = '¿Cuáles son las carreras relacionadas con \nprogramación con mayor porcentaje de egresadas?', x='',y='', fill=" ",
        subtitle ="Para el año 2015 en Argentina", 
        caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
@@ -478,21 +515,22 @@ ggplot(titulos_mas_mujeres,aes(x=2, y=porcenEM, fill=titulo_grupo))+
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(),
         legend.position = "bottom") 
-  #theme_elegante_std(base_family = "Ralleway") +
-  #theme_ft_rc()
+ 
 
-ggsave(here("grafico_dona2.png"), height = 10, width = 12, units = "in", type='cairo')
+ggsave(here("grafico_dona3colores_size8.png"), height = 10, width = 12, units = "in", type='cairo')
 #--------------------------------------------------------------------------------------------
 
+# FUNCIONA
 # diagramas de AREA POLAR o de Florence Nightingale egresadas según carrera para el año 2015
 ggplot(titulos_mas_mujeres,aes(x=titulo_grupo, y=porcenEM, fill=titulo_grupo))+
 geom_col(width = 1, color = "#2c204d") +
   scale_y_sqrt() +
   #xlim(0.5,2.5) + 
   coord_polar(start=3*pi/2) +
-  scale_fill_manual(values= c("#41b6a6", "#f6e37c","#f5a26b","#51b8df","#713580"))+
-  geom_text(aes(label=percent(porcenEM/100), size= 4),
-            position=position_stack(vjust=0.5),color="#2c204d",size=6) +
+  #scale_fill_manual(values= c("#41b6a6", "#f6e37c","#f5a26b","#51b8df","#713580"))+
+  scale_fill_manual(values= c("#41b6a6", "#753180","#e95c74","#f5a26b","#f6e37c")) +  #opción 2: ,"#51b8df"  #9ccfb1:verde lila:#753180
+ geom_text(aes(label=percent(porcenEM/100), size= 4),
+            position=position_stack(vjust=0.5),color="#2c204d",size= 8) +
   theme_ft_rc() +
   theme_elegante_std(base_family = "Ralleway") +
   labs(title = '¿Cuáles son las carreras relacionadas con programación \n con mayor porcentaje de egresadas?', x='',y='', fill=" ",
@@ -507,7 +545,7 @@ geom_col(width = 1, color = "#2c204d") +
         legend.position = "bottom") 
  
 ggsave(here("grafico_areaPolar2.png"), height = 10, width = 12, units = "in", type='cairo')
-
+ggsave(here("grafico_areaPolar2_size8.png"), height = 10, width = 12, units = "in", type='cairo')  #OPCIÓN 2
 
 #-----------------------------------------------------------------------------------
 ver <-programadoras %>% group_by(anio, titulo) %>% summarise(suma=sum(egMujeres))
@@ -558,7 +596,8 @@ if ("ggelegant" %in% rownames(installed.packages())) {
 }
 
 
-
+#-----------------------------------------------------------------------------------------
+# Referencias: https://pmoracho.github.io/blog/2020/05/01/30-dias-de-graficos-en-r/
 
 
 
