@@ -533,14 +533,16 @@ ggplot(data=titulos_mas_MU,aes(x = totalEM, y = titulo_grupo, fill = titulo_grup
 view(estudiantes_nivelR)
 gestion_mujeres<- estudiantes_nivelR %>% filter(anio==2015)
 
+
+# no funciona revisar 
 #Gráfico de waffles
 library("waffle")
-ggplot(data= gestion_mujeres, aes(x = genero, values = est_nivel)) +
+ggplot(data= gestion_mujeres, aes(x = est_nivel, values = c(40, 60, 25,75))) +
   geom_waffle(n_rows = 10, size = 0.33, colour = "white", flip = TRUE) +
-  scale_y_continuous(breaks = seq(0, 10, by = 1), labels = function(x) x * 10) +
-  scale_x_continuous(breaks = seq(0, 10, by = 1), labels = function(x) x * 10) +
+  scale_y_continuous(breaks = seq(0, 100, by = 10), labels = function(x) x * 10) +
+  #scale_x_continuous(breaks = seq(0, 10, by = 1), labels = function(x) x * 10) +
   coord_equal() +
-  facet_wrap(~ nivel) +
+  facet_wrap(~ genero) +
   #scale_fill_manual(values=c("#E69F00", "#56B4E9", "#009E73",  "#0072B2", "#D55E00", "#CC79A7")) +
   theme_elegante_std(base_family = "Assistant") +
   labs(title = '¿Cuáles son las carreras de las \n cuales egresan más Mujeres?', x='',y='', fill=" ",
