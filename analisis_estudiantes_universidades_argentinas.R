@@ -490,7 +490,7 @@ ggplot(titulos_mas_mujeres,aes(x=2, y= porcenEM, fill=titulo_grupo))+
 ggsave(here("grafico_dona3colores.png"), height = 10, width = 12, units = "in", type='cairo')    #size: 6
 
 
-
+#---------------------------------------------------------------------------
 # OPCION D2: 
 # GRÁFICO DE DONA  FUNCIONA LISTO!!!
 #código gracias a pmoracho egresadas según carrera para el año 2015
