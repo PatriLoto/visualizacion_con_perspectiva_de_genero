@@ -469,7 +469,9 @@ ggplot(titulos_mas_mujeres,aes(x=2, y=porcenEM, fill=titulo_grupo))+
   labs(title = '¿Cuáles son las carreras relacionadas con \nprogramación con mayor porcentaje de egresadas?', x='',y='', fill=" ",
        subtitle ="Para el año 2015 en Argentina", 
        caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-  theme(axis.title.x=element_blank(),
+  theme(
+    plot.title = element_text(hjust = 0,vjust = 1),                    #cambiamos el tamaño, fuente y color del título
+        axis.title.x=element_blank(),
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
         axis.title.y=element_blank(),
@@ -479,12 +481,12 @@ ggplot(titulos_mas_mujeres,aes(x=2, y=porcenEM, fill=titulo_grupo))+
   #theme_elegante_std(base_family = "Ralleway") +
   #theme_ft_rc()
 
-ggsave(here("grafico_dona.png"), height = 10, width = 12, units = "in", type='cairo')
+ggsave(here("grafico_dona2.png"), height = 10, width = 12, units = "in", type='cairo')
 #--------------------------------------------------------------------------------------------
 
 # diagramas de AREA POLAR o de Florence Nightingale egresadas según carrera para el año 2015
 ggplot(titulos_mas_mujeres,aes(x=titulo_grupo, y=porcenEM, fill=titulo_grupo))+
-geom_col(width = 1, color = "black") +
+geom_col(width = 1, color = "#2c204d") +
   scale_y_sqrt() +
   #xlim(0.5,2.5) + 
   coord_polar(start=3*pi/2) +
@@ -504,7 +506,7 @@ geom_col(width = 1, color = "black") +
         axis.ticks.y=element_blank(),
         legend.position = "bottom") 
  
-ggsave(here("grafico_areaPolar.png"), height = 10, width = 12, units = "in", type='cairo')
+ggsave(here("grafico_areaPolar2.png"), height = 10, width = 12, units = "in", type='cairo')
 
 
 #-----------------------------------------------------------------------------------
