@@ -55,12 +55,13 @@ View(hombres_anio)
 estudiantes_R_barra<-rbind(mujeres_anio, hombres_anio) %>% arrange(desc(totalgenero))
 view(estudiantes_R_barra)
 
-# si quiero mostrar la tabla generada con un formato más ordenado y visualmente más agradable utilizo el paquete kable
+# si quiero mostrar la tabla generada con un formato más ordenado y visualmente más agradable utilizo el paquete kableExtra
 kable(estudiantes_R_barra, align = "r") %>% 
   kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "center")
 
 #---------------------------------------------------------------------
-# Gráfico de BARRAS APILADAS:FUNCIONA NO TOCAR 
+# Gráfico de BARRAS APILADAS:FUNCIONA
+
 # librería para extender las funcionalidades de ggplot2
 library(hrbrthemes)
 hrbrthemes::import_titillium_web()
@@ -117,8 +118,6 @@ ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill= genero)) +
 ggsave(here("barras_apiladas_cant_OSCURO_final2_B.png"), height = 8, width = 10, units = "in", type='cairo')
 #ggsave(here("barras_apiladas_cant_final2.png"), height = 8, width = 10, units = "in", type='cairo')
 
-
-
 #-------------------------------------------------------------------------------------------------------------
 # Gráfico de líneas con total de estudiantes por género CORRECTO
 view(estudiantes_R)
@@ -167,6 +166,9 @@ View(hombres_est_gestion)
 estudiantes_R_gestion<-rbind(mujeres_est_gestion, hombres_est_gestion)%>% arrange(anio, gestion, totalgeneroxG)
 view(estudiantes_R_gestion)
 
+# si quiero mostrar la tabla generada con un formato más ordenado y visualmente más agradable utilizo el paquete kable
+kable(estudiantes_R_barra, align = "r") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "center")
 #-----------------------------
 # GRAFICOS DE LINEAS
 #-----------------------------
@@ -193,8 +195,296 @@ ggplot(data= estudiantes_R_gestion, aes(x= anio, y= totalgeneroxG, color= genero
 # Guardamos el gráfico generado
 ggsave(here("GESTION_lineas_1_B_facet_wrap.png"), height = 8, width = 10, units = "in", type='cairo')
 
-#--------------------------------------------------------------------------------------------------------------------------
-# GRÁFICOS NO UTILIZADOS EN LA PRESENTACIÓN
+
+#--------------------------------------------------------
+# UNIVERSIDADES CON MAYOR CANTIDAD DE ESTUDIANTES MUJERES
+---------------------------------------------------------
+#-------------------------------------------------  
+# función para redondear a decimales cuando cálculo brecha de género o vlores con porcentaje. 
+# Código por @NatsuSh
+  formato_porce <- function(numero, dec = 1){
+    format(round(numero, digits = dec), nsmall = dec, decimal.mark = ",")
+  }
+-------------------------------------------------
+# calculamos cantidad de ESTUDIANTES mujeres agrupadas por institución para el AÑO 2015
+  
+mujeres_est<- programadoras%>% filter(anio==2015) %>% group_by(institucion)%>% summarise(totalM= sum(estMujeres),totalV= sum(estVarones), total=sum(estMujeres, estVarones), prom=(round(mean(estMujeres),0)),
+                                                                                           porcenM= round(totalM/total* 100), porcenV=round(totalV/total * 100))%>%            
+  mutate(brecha = paste0(formato_porc((totalV-totalM)/total*100), "%"), medio = (totalV+totalM)/2)
+View(mujeres_est)
+
+# calculamos cuáles son las universidades con mayor brecha de género entre varones y mujeres en 2015
+mayor_brecha <- mujeres_est %>% top_n(10) %>% arrange(brecha)
+view(mayor_brecha)
+
+
+# calculamos universidades con mayor cantidad de estudiantes mujeres para el año 2015 ordenadas de manera descendente
+# por cantidad total
+# utilizamos top_n y arrange
+mas_mujeres_est <- mujeres_est %>% top_n(10) %>% arrange(desc(totalM))
+view(mas_mujeres_est)
+
+# calculamos universidades con mayor PORCENTAJE de estudiantes mujeres para el año 2015 ordenadas de manera descendente
+# por porcentaje
+mayor_porcen_mujeres_est <- mujeres_est %>% top_n(10) %>% arrange(desc(porcenM))
+view(mayor_porcen_mujeres_est)
+
+#calculamos universidades con mayor cantidad de estudiantes mujeres para el año 2015 ordenadas de manera ascendente
+# por cantidad total
+menos_mujeres_est <- mujeres_est %>% top_n(10) %>% arrange(asc(totalM))
+view(menos_mujeres_est)
+
+# si quiero mostrar la tabla generada con un formato más ordenado y visualmente más agradable utilizo el paquete kable
+kable(mas_mujeres_est, align = "r") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "center")
+
+#-----------------------------------------------------------
+# grafico lollipop 
+
+ggplot(mas_mujeres_est,aes(x=fct_reorder(institucion,(totalM)), y = totalM, group = institucion), label = totalM) +
+  geom_segment(aes(xend=institucion, yend=0), colour="#e3e4e5") +
+  geom_point(size=3.8, color="#a32ea2") +
+  geom_text (data =mas_mujeres_est, aes(institucion, totalM/2,  label = totalM), size=3, vjust = - 0.5,  nudge_y = .1) +
+  coord_flip() +
+  labs(title = 'Universidades Argentinas con mayor número \n de estudiantes mujeres', x='',y='', color=" ",
+       subtitle ="Para el año 2015" , 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme_ft_rc() +
+  theme(text = element_text(size=14, face = 'bold'),
+        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                  hjust = 0,vjust = 1,
+                                  face = 'bold', 
+                                  margin = margin(b = 12 * 1.2)),
+        legend.position="bottom",
+        legend.text= element_text(color="#2c204d", 
+                                  size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+
+# Guardamos el gráfico generado
+ggsave(here("lollipop_estudiantes2.png"), height = 8, width = 12, units = "in", type='cairo')
+
+#---------------------------------------------------------------------------------------------------
+# Gráfico de dumbbell que evidencia las universidades que poseen mayor brecha de género para el año 2015. 
+
+colores = c("#a32ea2","#d8d860") #fct_reorder(name, desc(val))
+ggplot(mas_mujeres_est, aes(x = totalM, xend = totalV, y =fct_reorder(institucion,(brecha)), group = institucion, label = brecha)) +
+  geom_dumbbell(color= "#808080",
+                size_x = 3, size_xend = 3,
+                colour_x = colores[1],
+                colour_xend = colores[2]) +
+  #geom_text(aes(label = brecha), nudge_y = .2)+
+  scale_color_manual(values= colores) +
+  geom_text(aes(medio, institucion, label = brecha), size=3, nudge_y = .2) +
+  labs(title = 'Universidades Argentinas con mayor número brecha de género \n', x='',y='', color=" ",
+       subtitle ="Para el año 2015" , 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme_ft_rc() +
+  theme(text = element_text(size=14, face = 'bold'),
+        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                  # family ="Garamond",    
+                                  hjust = 0,vjust = 1,
+                                  #colour = "#2c204d", 
+                                  face = 'bold', 
+                                  margin = margin(b = 12 * 1.2)),
+        legend.position="bottom",
+        legend.text= element_text(color="#2c204d", 
+                                  size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+
+# ---------------------------------------------------------------------------------------------------------------------------
+# Tipo de títulos donde existen mayor cantidad de EGRESADAS mujeres
+# Agrupamos los títulos en las siguientes categorías: Licenciatura, tecnicatura, analista, programador e ingeniería.
+
+# Pude hacerlo gracias a Violeta Roizman
+grupo_titulo <- programadoras %>%
+  mutate(titulo_grupo = case_when(str_detect(titulo, "Licenciatura") ~ "Licenciatura",
+                                  str_detect(titulo,"Tecnicatura") ~ "Tecnicatura",
+                                  str_detect(titulo,"Analista") ~ "Analista",
+                                  str_detect(titulo,"Programador") ~ "Programador",
+                                  str_detect(titulo, "Ingeniería") ~ "Ingeniería",
+                                  str_detect(titulo, "Computador") ~ "Tecnicatura"))
+
+view(grupo_titulo)
+# Gracias Violeta Roizman
+
+#-----------------------------------------------------------------------------------------------------------
+# ¿Cuáles son los títulos relacionados a progrmamación que tienen mayor egreso de  Mujeres para el año 2015?
+#-----------------------------------------------------------------------------------------------------------
+# calculamos cantidad total y porcentaje de EGRESADOS género para el año 2015
+
+titulos_mas_mujeres<- grupo_titulo %>% filter(anio==2015) %>% group_by(titulo_grupo)%>% summarise(totalEM= sum(egMujeres),totalEV= sum(egVarones), totalE=sum(egMujeres, egVarones), prom=(round(mean(egMujeres),0)),
+                                                                                                  porcenEM= (totalEM/totalE * 100), porcenEV=(totalEV/totalE * 100))%>% 
+  mutate(brecha = paste0(formato_porce((totalEV-totalEM)/totalE *100), "%"), medio = (totalEV+totalEM)/2)
+View(titulos_mas_mujeres)
+
+titulos_mas_MU<- grupo_titulo %>% group_by(anio, titulo_grupo)%>% summarise(totalEM= sum(egMujeres),totalEV= sum(egVarones), totalE=sum(egMujeres, egVarones), prom=(round(mean(egMujeres),0)),
+                                                                            porcenEM= round((totalEM/totalE * 100),2), porcenEV=round(totalEV/totalE * 100))%>% 
+  mutate(brecha = paste0(formato_porc((totalEV-totalEM)/totalE *100), "%"), medio = (totalEV+totalEM)/2)
+View(titulos_mas_MU)
+
+#---------------------------------------------------------------------------
+# OPCION D2: 
+# Gráfico de Dona FUNCIONA 
+# código gracias a pmoracho egresadas según carrera para el año 2015
+
+ggplot(titulos_mas_mujeres,aes(x=2, y= porcenEM, fill=titulo_grupo))+
+  geom_bar(stat = "identity",color="white")+   ##2c204d
+  coord_polar(theta="y") +
+  theme_ft_rc() +
+  xlim(0.5,2.5) +
+  geom_text(aes(label=percent(porcenEM/100)),  
+            position=position_stack(vjust=0.5),color="#2c204d",size= 8) +
+  scale_fill_manual(values= c("#41b6a6", "#753180","#e95c74","#f5a26b","#f6e37c")) +  
+  labs(title = '¿Cuáles son las carreras relacionadas con \nprogramación con mayor porcentaje de egresadas?', x='',y='', fill=" ",
+       subtitle ="Para el año 2015 en Argentina", 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme(
+    plot.title = element_text(hjust = 0,vjust = 1),                    #cambiamos el tamaño, fuente y color del título
+    axis.title.x=element_blank(),
+    axis.text.x=element_blank(),
+    axis.ticks.x=element_blank(),
+    axis.title.y=element_blank(),
+    axis.text.y=element_blank(),
+    axis.ticks.y=element_blank(),
+    legend.position = "bottom") 
+
+# Guardamos el gráfico generado
+ggsave(here("grafico_dona_final.png"), height = 10, width = 12, units = "in", type='cairo')
+
+# -------------------------------------------------------------------------------------------------
+# Diagramas de AREA POLAR o de Florence Nightingale egresadas según carrera para el año 2015
+ggplot(titulos_mas_mujeres,aes(x=titulo_grupo, y=porcenEM, fill=titulo_grupo))+
+  geom_col(width = 1, color = "#2c204d") +
+  scale_y_sqrt() +
+  coord_polar(start=3*pi/2) +
+  scale_fill_manual(values= c("#41b6a6", "#753180","#e95c74","#f5a26b","#f6e37c")) +  
+  geom_text(aes(label=percent(porcenEM/100), size= 4),
+            position=position_stack(vjust=0.5),color="#2c204d",size= 8) +
+  theme_ft_rc() +
+  theme_elegante_std(base_family = "Ralleway") +
+  labs(title = '¿Cuáles son las carreras relacionadas con programación \n con mayor porcentaje de egresadas?', x='',y='', fill=" ",
+       subtitle = "Para el año 2015 en Argentina", 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        legend.position = "bottom") 
+
+# Guardamos el gráfico generado
+ggsave(here("grafico_areaPolar_final.png"), height = 10, width = 12, units = "in", type='cairo') 
+
+#--------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------
+# GRÁFICOS Y CÁLCULOS NO UTILIZADOS EN LA PRESENTACIÓN
+#-----------------------------------------------------------------------------------------------------------
+# ¿Cuáles son los títulos relacionados a progrmamación que tienen mayor egreso de  Mujeres para el año 2015?
+#-----------------------------------------------------------------------------------------------------------
+# calculamos cantidad total y porcentaje de EGRESADOS género para el año 2015
+# ESTE UTILIZO PARA EL GRÁFICO
+
+# calculamos cantidad y porcentaje de EGRESADOS por año género Y año
+#grupo_titulo%>% group_by(titulo) %>% summarise(mu=sum(egMujeres), varones=sum(egVarones), total=sum (egMujeres, egVarones),porcen= (mu/total * 100))
+#view(grupo_titulo)
+
+titulos_mas_mujeres<- grupo_titulo %>% filter(anio==2015) %>% group_by(titulo_grupo)%>% summarise(totalEM= sum(egMujeres),totalEV= sum(egVarones), totalE=sum(egMujeres, egVarones), prom=(round(mean(egMujeres),0)),
+                                                                                                  porcenEM= (totalEM/totalE * 100), porcenEV=(totalEV/totalE * 100))%>% 
+  mutate(brecha = paste0(formato_porce((totalEV-totalEM)/totalE *100), "%"), medio = (totalEV+totalEM)/2)
+View(titulos_mas_mujeres)
+
+titulos_mas_MU<- grupo_titulo %>% group_by(anio, titulo_grupo)%>% summarise(totalEM= sum(egMujeres),totalEV= sum(egVarones), totalE=sum(egMujeres, egVarones), prom=(round(mean(egMujeres),0)),
+                                                                            porcenEM= round((totalEM/totalE * 100),2), porcenEV=round(totalEV/totalE * 100))%>% 
+  mutate(brecha = paste0(formato_porc((totalEV-totalEM)/totalE *100), "%"), medio = (totalEV+totalEM)/2)
+View(titulos_mas_MU)
+
+#---------------------------------------------------------------
+# Gráfico LLOLIPOP con egresadas según carrera para el año 2015
+
+ggplot(titulos_mas_mujeres,aes(x= fct_reorder(titulo_grupo, totalEM), y = totalEM, group = titulo_grupo), label = totalEM) +
+  geom_segment(aes(xend=titulo_grupo, yend=0)) +
+  geom_segment(data=titulos_mas_hombres, (aes(xend=titulo_grupo, yend=0, color="grey"))) +
+  geom_point(size=3.8, color="#a32ea2") +
+  geom_text (data = titulos_mas_mujeres, aes(titulo_grupo, (totalEM + 5),  label = totalEM), size=3.5 , color="#a32ea2", vjust = - 0.5,  nudge_y = .1) +
+  #coord_flip() +
+  labs(title = '¿Cuáles son las carreras relacionadas con programación \n con mayor nro. de egresadas?', x='',y='', color=" ",
+       subtitle ="Para el año 2015 en Argentina" , 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme_ft_rc() +
+  theme(text = element_text(size=14, face = 'bold'),
+        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                  hjust = 0,vjust = 1,
+                                  face = 'bold', 
+                                  margin = margin(b = 12 * 1.2)),
+        legend.position=" ",
+        legend.text= element_text(color="#2c204d", 
+                                  size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+
+# ¿Cuántas mujeres egresan de carreras relacionadas con programación en Argentina?
+
+
+# universidades con mayor brecha de género entre varones y mujeres en 2015
+#mayor_brecha <- mujeres_est %>% top_n(10) %>% arrange(brecha)
+#view(mayor_brecha)
+
+#---------------------------------------------------------
+# FUNCIONA 
+# OPCIÓN D1: primer GRÁFICO DE DONA con CELESTE  
+#código gracias a pmoracho egresadas según carrera para el año 2015
+
+ggplot(titulos_mas_mujeres,aes(x=2, y= porcenEM, fill=titulo_grupo))+
+  geom_bar(stat = "identity",color="white")+   ##2c204d
+  coord_polar(theta="y") +
+  theme_ft_rc() +
+  xlim(0.5,2.5) +
+  geom_text(aes(label=percent(porcenEM/100)),  
+            position=position_stack(vjust=0.5),color="#2c204d",size= 6) +   #opcion1: size= 6
+  scale_fill_manual(values= c("#41b6a6", "#f6e37c","#f5a26b","#51b8df","#713580")) + #opción 1 de colores lila:#713580
+  #scale_fill_manual(values= c("#41b6a6", "#753180","#e95c74","#f5a26b","#f6e37c")) +  #opción 2: ,"#51b8df"  #9ccfb1:verde lila:#753180
+  labs(title = '¿Cuáles son las carreras relacionadas con \nprogramación con mayor porcentaje de egresadas?', x='',y='', fill=" ",
+       subtitle ="Para el año 2015 en Argentina", 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme(
+    plot.title = element_text(hjust = 0,vjust = 1),                    #cambiamos el tamaño, fuente y color del título
+    axis.title.x=element_blank(),
+    axis.text.x=element_blank(),
+    axis.ticks.x=element_blank(),
+    axis.title.y=element_blank(),
+    axis.text.y=element_blank(),
+    axis.ticks.y=element_blank(),
+    legend.position = "bottom", legend.text= element_text(size=12))+     #me permite modificar el tamaño del texto de la leyenda
+  guides(colour = guide_legend(nrow = 2))   
+
+
+ggsave(here("grafico_dona4colores.png"), height = 10, width = 12, units = "in", type='cairo')    #size: 6
+#----------------------------------------------------------------------
+# FUNCIONA
+# diagramas de AREA POLAR o de Florence Nightingale egresadas según carrera para el año 2015
+ggplot(titulos_mas_mujeres,aes(x=titulo_grupo, y=porcenEM, fill=titulo_grupo))+
+  geom_col(width = 1, color = "#2c204d") +
+  scale_y_sqrt() +
+  coord_polar(start=3*pi/2) +
+  scale_fill_manual(values= c("#41b6a6", "#f6e37c","#f5a26b","#51b8df","#713580"))+
+  #scale_fill_manual(values= c("#41b6a6", "#753180","#e95c74","#f5a26b","#f6e37c")) +  #opción 2: ,"#51b8df"  #9ccfb1:verde lila:#753180
+  geom_text(aes(label=percent(porcenEM/100), size= 4),
+            position=position_stack(vjust=0.5),color="#2c204d",size= 8) +
+  theme_ft_rc() +
+  theme_elegante_std(base_family = "Ralleway") +
+  labs(title = '¿Cuáles son las carreras relacionadas con programación \n con mayor porcentaje de egresadas?', x='',y='', fill=" ",
+       subtitle = "Para el año 2015 en Argentina", 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        legend.position = "bottom") 
+
+ggsave(here("grafico_areaPolar2.png"), height = 10, width = 12, units = "in", type='cairo')
+
+
+#-----------------------------------------------------------------------------------
+
 # OPCION 1: A CLARA
 # gráfico de LÍNEAS con CANTIDAD de estudiantes por GENERO y GESTION 
 
@@ -286,279 +576,9 @@ View(cant_varones_anio_inst)
 
 # me permitirá observar cantidad de mujeres y hombres por universidad, para luego hacer un ranking.
 
-------------------------------------------------
-# función para redondear a decimales cuando cálculo brecha de género o vlores con porcentaje. Código por @NatsuSh
-formato_porce <- function(numero, dec = 1){
-    format(round(numero, digits = dec), nsmall = dec, decimal.mark = ",")
-  }
--------------------------------------------------
-# calculamos cantidad de ESTUDIANTES mujeres agrupadas por institución para el AÑO 2015
-  
-mujeres_est<- programadoras%>% filter(anio==2015) %>% group_by(institucion)%>% summarise(totalM= sum(estMujeres),totalV= sum(estVarones), total=sum(estMujeres, estVarones), prom=(round(mean(estMujeres),0)),
-                               porcenM= round(totalM/total* 100), porcenV=round(totalV/total * 100))%>%            
-mutate(brecha = paste0(formato_porc((totalV-totalM)/total*100), "%"), medio = (totalV+totalM)/2)
-View(mujeres_est)
-
-
-# calculamos cuáles son las universidades con mayor brecha de género entre varones y mujeres en 2015
-mayor_brecha <- mujeres_est %>% top_n(10) %>% arrange(brecha)
-view(mayor_brecha)
-
-
-#--------------------------------------------------------------------------------
-# UNIVERSIDADES CON MAYOR CANTIDAD DE ESTUDIANTES
-
-# calculamos universidades con mayor cantidad de estudiantes mujeres para el año 2015 ordenadas por cantidad total
-# utilizamos top_n y arrange
-mas_mujeres_est <- mujeres_est %>% top_n(10) %>% arrange(desc(totalM))
-view(mas_mujeres_est)
-
-# calculamos universidades con mayor cantidad PORCENTAJE de estudiantes mujeres para el año 2015 ordenadas por cantidad total
-mayor_porcen_mujeres_est <- mujeres_est %>% top_n(10) %>% arrange(desc(porcenM))
-view(mayor_porcen_mujeres_est)
-
-#calculamos universidades con mayor cantidad de estudiantes mujeres para el año 2015 ordenadas por cantidad total
-menos_mujeres_est <- mujeres_est %>% top_n(10) %>% arrange(asc(totalM))
-view(menos_mujeres_est)
-
-
-# modificar nombre de columnas -revisar mi oresentacion o la de allison hill
-kable(mas_mujeres_est, align = "r") %>% 
-  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "center")
-
-# grafico lollipop  fct_reorder(institucion,(brecha))
-ggplot(mas_mujeres_est,aes(x=fct_reorder(institucion,(totalM)), y = totalM, group = institucion), label = totalM) +
-  geom_segment(aes(xend=institucion, yend=0), colour="#e3e4e5") +
-  geom_point(size=3.8, color="#a32ea2") +
-  geom_text (data =mas_mujeres_est, aes(institucion, totalM/2,  label = totalM), size=3, vjust = - 0.5,  nudge_y = .1) +
-  coord_flip() +
-  labs(title = 'Universidades Argentinas con mayor número \n de estudiantes mujeres', x='',y='', color=" ",
-       subtitle ="Para el año 2015" , 
-       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-  theme_ft_rc() +
-  theme(text = element_text(size=14, face = 'bold'),
-        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
-                                  # family ="Garamond",    
-                                  hjust = 0,vjust = 1,
-                                  #colour = "#2c204d", 
-                                  face = 'bold', 
-                                  margin = margin(b = 12 * 1.2)),
-        legend.position="bottom",
-        legend.text= element_text(color="#2c204d", 
-                                  size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
-
-
-ggsave(here("lollipop_estudiantes2.png"), height = 8, width = 12, units = "in", type='cairo')
-
-#---------------------------------------------------------------------------------------------------
-# Gráfico de dumble que evidencia las universidades que poseen mayor brecha de género en 2015. 
-colores = c("#a32ea2","#d8d860") #fct_reorder(name, desc(val))
-ggplot(mas_mujeres_est, aes(x = totalM, xend = totalV, y =fct_reorder(institucion,(brecha)), group = institucion, label = brecha)) +
-  geom_dumbbell(color= "#808080",
-                size_x = 3, size_xend = 3,
-                colour_x = colores[1],
-                colour_xend = colores[2]) +
-  #geom_text(aes(label = brecha), nudge_y = .2)+
-  scale_color_manual(values= colores) +
-  geom_text(aes(medio, institucion, label = brecha), size=3, nudge_y = .2) +
-  labs(title = 'Universidades Argentinas con mayor número brecha de género \n', x='',y='', color=" ",
-     subtitle ="Para el año 2015" , 
-     caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-  theme_ft_rc() +
-  theme(text = element_text(size=14, face = 'bold'),
-        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
-                                  # family ="Garamond",    
-                                  hjust = 0,vjust = 1,
-                                  #colour = "#2c204d", 
-                                  face = 'bold', 
-                                  margin = margin(b = 12 * 1.2)),
-        legend.position="bottom",
-        legend.text= element_text(color="#2c204d", 
-                                  size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
-
-
-
-
-
-# OPCIÓN 1: grafico de barras con cantidades funciona y con gext y etiquetas correctas
-# ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill= genero)) +
-#   geom_bar(stat= "identity", position = "stack", width= .8, color= "black")+
-#   #coord_flip()+
-#   scale_fill_manual(values= c("#d8d860","#a32ea2"), labels= c('Hombres', 'Mujeres'))+  #amarillo claro:#f1fa8c  verde:#41b6a6 lilaoscuro:#713580 
-#   scale_x_continuous(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c('2010', '2011', '2012','2013', '2014','2015')) +
-#   geom_text(aes(label=paste0(totalgenero)), position = position_stack(vjust=0.5), size=3) +
-#   #geom_text (data =estudiantes_R_barra, aes(anio, medio=(totalgenero/2),label = paste0(totalgenero)), size=3, color = "#2c204d", vjust = - 0.7,  nudge_y = .1) +
-#   labs(title = 'Estudiantes de carreras relacionadas con Programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
-#        subtitle ="Para el período 2010-2015" , 
-#        caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-#   theme_ipsum_tw()+
-#   theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
-#         plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
-#                                   # family ="Garamond",    
-#                                   hjust = 0,vjust = 1,
-#                                   colour = "#2c204d", 
-#                                   face = 'bold', 
-#                                   margin = margin(b = 12 * 1.2)),
-#         legend.position="bottom",legend.text= element_text(color="#2c204d", 
-#                                                            size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
-
-# ---------------------------------------------------------------------------------------------------------------------------
-# PARA GRAFICAR CARRERAS MÁS ELEGIDAS POR ESTUDIANTES
-# agrupado por título, agregó un nuevo campo titulo_grupo
-
-# Pude hacerlo gracias a Violeta Roizman
-grupo_titulo <- programadoras %>%
-  mutate(titulo_grupo = case_when(str_detect(titulo, "Licenciatura") ~ "Licenciatura",
-                                str_detect(titulo,"Tecnicatura") ~ "Tecnicatura",
-                                str_detect(titulo,"Analista") ~ "Analista",
-                                str_detect(titulo,"Programador") ~ "Programador",
-                                str_detect(titulo, "Ingeniería") ~ "Ingeniería",
-                                str_detect(titulo, "Computador") ~ "Tecnicatura"))
-         
-view(grupo_titulo)
-# Gracias Violeta Roizman
-
-grupo_titulo%>% group_by(titulo) %>% summarise(mu=sum(egMujeres), varones=sum(egVarones), total=sum (egMujeres, egVarones),porcen= (mu/total * 100))
-view(grupo_titulo)
-
-# ¿Cuáles son las carreras de las cuales egresan más Mujeres?
-# cantidad de TITULOS mujeres agrupadas por institución para el AÑO 2015
-#-------------------------------------------
-# ESTE UTILIZO PARA EL GRÁFICO
-titulos_mas_mujeres<- grupo_titulo %>% filter(anio==2015) %>% group_by(titulo_grupo)%>% summarise(totalEM= sum(egMujeres),totalEV= sum(egVarones), totalE=sum(egMujeres, egVarones), prom=(round(mean(egMujeres),0)),
-                                                                                         porcenEM= (totalEM/totalE * 100), porcenEV=(totalEV/totalE * 100))%>% 
-  mutate(brecha = paste0(formato_porce((totalEV-totalEM)/totalE *100), "%"), medio = (totalEV+totalEM)/2)
-View(titulos_mas_mujeres)
-
-titulos_mas_MU<- grupo_titulo %>% group_by(anio, titulo_grupo)%>% summarise(totalEM= sum(egMujeres),totalEV= sum(egVarones), totalE=sum(egMujeres, egVarones), prom=(round(mean(egMujeres),0)),
-                                                                                                  porcenEM= round((totalEM/totalE * 100),2), porcenEV=round(totalEV/totalE * 100))%>% 
-  mutate(brecha = paste0(formato_porc((totalEV-totalEM)/totalE *100), "%"), medio = (totalEV+totalEM)/2)
-View(titulos_mas_MU)
-
-#----------------------------------------
-
-# GRÁFICO LLOLIPOP FUNCIONO
-# egresadas según carrera para el año 2015
-
-ggplot(titulos_mas_mujeres,aes(x= fct_reorder(titulo_grupo, totalEM), y = totalEM, group = titulo_grupo), label = totalEM) +
-  geom_segment(aes(xend=titulo_grupo, yend=0)) +
-  geom_segment(data=titulos_mas_hombres, (aes(xend=titulo_grupo, yend=0, color="grey"))) +
-  geom_point(size=3.8, color="#a32ea2") +
-  geom_text (data = titulos_mas_mujeres, aes(titulo_grupo, (totalEM + 5),  label = totalEM), size=3.5 , color="#a32ea2", vjust = - 0.5,  nudge_y = .1) +
-  #coord_flip() +
-  labs(title = '¿Cuáles son las carreras relacionadas con programación \n con mayor nro. de egresadas?', x='',y='', color=" ",
-       subtitle ="Para el año 2015 en Argentina" , 
-       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-  theme_ft_rc() +
-  theme(text = element_text(size=14, face = 'bold'),
-        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
-                                  # family ="Garamond",    
-                                  hjust = 0,vjust = 1,
-                                  #colour = "#2c204d", 
-                                  face = 'bold', 
-                                  margin = margin(b = 12 * 1.2)),
-        legend.position=" ",
-        legend.text= element_text(color="#2c204d", 
-                                  size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
-
-# ¿Cuántos mujeres egresan de carreras relacionadas con programación en Argentina?
-# **IMPORTANTE: VERIFICAR BRECHA, si está bien calculada.
-
-# universidades con mayor brecha de género entre varones y mujeres en 2015
-#mayor_brecha <- mujeres_est %>% top_n(10) %>% arrange(brecha)
-#view(mayor_brecha)
-
-
-#---------------------------------------------------------
-# FUNCIONA LISTO NO TOCAR!!!
-# OPCIÓN D1: primer GRÁFICO DE DONA con CELESTE  
-#código gracias a pmoracho egresadas según carrera para el año 2015
-
-ggplot(titulos_mas_mujeres,aes(x=2, y= porcenEM, fill=titulo_grupo))+
-  geom_bar(stat = "identity",color="white")+   ##2c204d
-  coord_polar(theta="y") +
-  theme_ft_rc() +
-  xlim(0.5,2.5) +
-  geom_text(aes(label=percent(porcenEM/100)),  
-            position=position_stack(vjust=0.5),color="#2c204d",size= 6) +   #opcion1: size= 6
-  scale_fill_manual(values= c("#41b6a6", "#f6e37c","#f5a26b","#51b8df","#713580")) + #opción 1 de colores lila:#713580
-  #scale_fill_manual(values= c("#41b6a6", "#753180","#e95c74","#f5a26b","#f6e37c")) +  #opción 2: ,"#51b8df"  #9ccfb1:verde lila:#753180
-  labs(title = '¿Cuáles son las carreras relacionadas con \nprogramación con mayor porcentaje de egresadas?', x='',y='', fill=" ",
-       subtitle ="Para el año 2015 en Argentina", 
-       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-  theme(
-    plot.title = element_text(hjust = 0,vjust = 1),                    #cambiamos el tamaño, fuente y color del título
-    axis.title.x=element_blank(),
-    axis.text.x=element_blank(),
-    axis.ticks.x=element_blank(),
-    axis.title.y=element_blank(),
-    axis.text.y=element_blank(),
-    axis.ticks.y=element_blank(),
-    legend.position = "bottom", legend.text= element_text(size=12))+     #me permite modificar el tamaño del texto de la leyenda
-  guides(colour = guide_legend(nrow = 2))   
-
-
-ggsave(here("grafico_dona4colores.png"), height = 10, width = 12, units = "in", type='cairo')    #size: 6
-
-
-#---------------------------------------------------------------------------
-# OPCION D2: 
-# GRÁFICO DE DONA  FUNCIONA LISTO!!!
-#código gracias a pmoracho egresadas según carrera para el año 2015
-
-ggplot(titulos_mas_mujeres,aes(x=2, y= porcenEM, fill=titulo_grupo))+
-  geom_bar(stat = "identity",color="white")+   ##2c204d
-  coord_polar(theta="y") +
-  theme_ft_rc() +
-  xlim(0.5,2.5) +
-  geom_text(aes(label=percent(porcenEM/100)),  #opcion1: size= 6
-            position=position_stack(vjust=0.5),color="#2c204d",size= 8) +
- scale_fill_manual(values= c("#41b6a6", "#753180","#e95c74","#f5a26b","#f6e37c")) +  #opción 2: ,"#51b8df"  #9ccfb1:verde lila:#753180
-  labs(title = '¿Cuáles son las carreras relacionadas con \nprogramación con mayor porcentaje de egresadas?', x='',y='', fill=" ",
-       subtitle ="Para el año 2015 en Argentina", 
-       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-  theme(
-    plot.title = element_text(hjust = 0,vjust = 1),                    #cambiamos el tamaño, fuente y color del título
-        axis.title.x=element_blank(),
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.title.y=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank(),
-        legend.position = "bottom") 
- 
-
-ggsave(here("grafico_dona3colores_size8.png"), height = 10, width = 12, units = "in", type='cairo')
-#--------------------------------------------------------------------------------------------
-
-# FUNCIONA
-# diagramas de AREA POLAR o de Florence Nightingale egresadas según carrera para el año 2015
-ggplot(titulos_mas_mujeres,aes(x=titulo_grupo, y=porcenEM, fill=titulo_grupo))+
-geom_col(width = 1, color = "#2c204d") +
-  scale_y_sqrt() +
-  #xlim(0.5,2.5) + 
-  coord_polar(start=3*pi/2) +
-  #scale_fill_manual(values= c("#41b6a6", "#f6e37c","#f5a26b","#51b8df","#713580"))+
-  scale_fill_manual(values= c("#41b6a6", "#753180","#e95c74","#f5a26b","#f6e37c")) +  #opción 2: ,"#51b8df"  #9ccfb1:verde lila:#753180
- geom_text(aes(label=percent(porcenEM/100), size= 4),
-            position=position_stack(vjust=0.5),color="#2c204d",size= 8) +
-  theme_ft_rc() +
-  theme_elegante_std(base_family = "Ralleway") +
-  labs(title = '¿Cuáles son las carreras relacionadas con programación \n con mayor porcentaje de egresadas?', x='',y='', fill=" ",
-       subtitle = "Para el año 2015 en Argentina", 
-       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-  theme(axis.title.x=element_blank(),
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.title.y=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank(),
-        legend.position = "bottom") 
- 
-ggsave(here("grafico_areaPolar2.png"), height = 10, width = 12, units = "in", type='cairo')
-ggsave(here("grafico_areaPolar2_size8.png"), height = 10, width = 12, units = "in", type='cairo')  #OPCIÓN 2
-
-#-----------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
+# no funciona revisar GRÁFICO DE ggridges y waffles
+# gráfico de ggridges
 ver <-programadoras %>% group_by(anio, titulo) %>% summarise(suma=sum(egMujeres))
 view(ver)
 # gráfico de ggridges
@@ -613,18 +633,4 @@ if ("ggelegant" %in% rownames(installed.packages())) {
 
 
 
-
-
-mujeres_est_gestion<- grupo_titulo %>% group_by(anio, gestion) %>%
-  summarise(totalgeneroxG = sum(estMujeres), totalxG= sum(estMujeres, estVarones), promxG=(round(mean(estMujeres),0)),
-            porcengeneroxG = round(totalgeneroxG/totalxG * 100)) %>% mutate(genero='Mujeres')
-View(mujeres_est_gestion)
-hombres_est_gestion<- grupo_titulo %>% group_by(anio, gestion) %>%
-  summarise(totalgeneroxG = sum(estVarones), totalxG= sum(estMujeres, estVarones), promxG=(round(mean(estVarones),0)),
-            porcengeneroxG = round(totalgeneroxG/totalxG * 100)) %>% mutate(genero='Hombres') 
-View(hombres_est_gestion)
-
-#estudiantes varones y mujeres por gestión
-estudiantes_R_gestion<-rbind(mujeres_est_gestion, hombres_est_gestion)%>% arrange(anio, gestion, totalgeneroxG)
-view(estudiantes_R_gestion)
 
