@@ -7,14 +7,15 @@
 #-------------------------------
 # Importamos las librerías
 #-------------------------------
-library(here)   # Es muy importante para poder utilizar rutas relativas
-library(tidyverse)       # Conjunto de paquetes que nos brindan las herramientas necesarias 
+
+library(here)             # Es muy importante para poder utilizar rutas relativas
+library(tidyverse)        # Conjunto de paquetes que nos brindan las herramientas necesarias 
                           # para trabajar a lo largo de todo el proceso de ciencia de datos
 library(scales)
 library(knitr)
 
-# para presentar la información tablas de manera más ordenada
-library(kableExtra)
+
+library(kableExtra)       # para presentar la información tablas de manera más ordenada
 #-----------------------
 # Leemos los datos
 #----------------------
@@ -27,9 +28,10 @@ view(programadoras)
 ## nombres de las variables
 names(programadoras)
 
-#cantidad de observaciones y tipo de variables
+# cantidad de observaciones y tipo de variables
 glimpse(programadoras)
-# podemos ver las primeras filas del dataset
+
+# podemos ver las primeras filas del dataset con head()
 head(programadoras)
 
 # podemos ver las filas de acuerdo al rango deseado
@@ -42,23 +44,28 @@ slice(programadoras,1:30)
 # cantidad total de estudiantes hombres y mujeres
 #-----------------------------------------------
 
-# calculamos  totales por género, promedio y porcentaje
+# calculamos  totales por género, promedio y porcentaje utilizamos group_by y summarise
+
 mujeres_anio<- programadoras%>%group_by(anio)%>% summarise(totalgenero= sum(estMujeres), total=sum(estMujeres, estVarones), prom=(round(mean(estMujeres),0)), porcen= round(totalgenero/total*100)) %>% mutate(genero='Mujeres') 
 View(mujeres_anio)
 hombres_anio<- programadoras %>% group_by(anio) %>% summarise(totalgenero= sum(estVarones), total=sum(estMujeres, estVarones), prom=(round(mean(estVarones),0)), porcen=round(totalgenero/total*100)) %>% mutate(genero='Hombres')
 View(hombres_anio)
 
-# uninmos las tablas generadas anteriormente 
-estudiantes_R_barra<-rbind(mujeres_anio, hombres_anio)%>%arrange(desc(totalgenero))
+# unimos las tablas generadas anteriormente 
+estudiantes_R_barra<-rbind(mujeres_anio, hombres_anio) %>% arrange(desc(totalgenero))
 view(estudiantes_R_barra)
 
+# si quiero mostrar la tabla generada con un formato más ordenado y visualmente más agradable utilizo el paquete kable
+kable(estudiantes_R_barra, align = "r") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "center")
+
 #---------------------------------------------------------------------
-# gráfico barras apiladas
+# Gráfico de BARRAS APILADAS:FUNCIONA NO TOCAR 
 # librería para extender las funcionalidades de ggplot2
 library(hrbrthemes)
 hrbrthemes::import_titillium_web()
 
-# BARRAS APILADAS:FUNCIONA NO TOCAR 
+
 # OPCIÓN 2.A: OSCURA grafico de barras con PORCENTAJES funciona y con gtext y etiquetas correctas
 ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill= genero)) +
   geom_bar(stat= "identity", position = "stack", width= .7, color= "black")+
@@ -66,7 +73,6 @@ ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill= genero)) +
   scale_fill_manual(values= c("#d8d860","#a32ea2"), labels= c('Hombres', 'Mujeres'))+  #amarillo claro:#f1fa8c  verde:#41b6a6 lilaoscuro:#713580 
   scale_x_continuous(breaks= c(2010, 2011, 2012,2013,2014,2015), labels= c('2010', '2011', '2012','2013', '2014','2015')) +
   geom_text(aes (label = paste0(porcen, "%")), position = position_stack(vjust=0.5), size=4, color="#2c204d") +
-  #geom_text (data =estudiantes_R_barra, aes(anio, medio=(totalgenero/2),label = paste0(totalgenero)), size=3, color = "#2c204d", vjust = - 0.7,  nudge_y = .1) +
   labs(title = 'Estudiantes de carreras relacionadas con programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
        subtitle ="Para el período 2010-2015" , 
        caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
@@ -82,6 +88,7 @@ ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill= genero)) +
                                                            size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
 
 
+# Guardamos el gráfico generado
 ggsave(here("barras_apiladas_final2_a.png"), height = 8, width = 10, units = "in", type='cairo')
 #ggsave(here("barras_apiladas_cant_final2.png"), height = 8, width = 10, units = "in", type='cairo')
 
@@ -106,10 +113,139 @@ ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill= genero)) +
         legend.position="bottom",legend.text= element_text(color="grey", 
                                                            size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
 
-
+# Guardamos el gráfico generado
 ggsave(here("barras_apiladas_cant_OSCURO_final2_B.png"), height = 8, width = 10, units = "in", type='cairo')
 #ggsave(here("barras_apiladas_cant_final2.png"), height = 8, width = 10, units = "in", type='cairo')
 
+
+
+#-------------------------------------------------------------------------------------------------------------
+# Gráfico de líneas con total de estudiantes por género CORRECTO
+view(estudiantes_R)
+# FUNCIONA 
+# opción 1
+ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
+  geom_line(size=2) +
+  geom_point(data=estudiantes_R, aes(anio, total), size=3) +
+  scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
+  facet_wrap(~genero, ncol=1) +
+  labs(title = 'Estudiantes de carreras relacionadas con programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
+       subtitle ="Para el período 2010-2015" , 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme_ft_rc() +
+  theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                  family ="Garamond",    
+                                  hjust = 0,vjust = 1,
+                                  #colour = "#2c204d", 
+                                  face = 'bold', 
+                                  margin = margin(b = 12 * 1.2)),
+        legend.position="  ", legend.text= element_text(color="#2c204d", 
+                                                        size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+
+# Guardamos el gráfico generado
+ggsave(here("grafico_total_facet_puntos.png"), height = 8, width = 10, units = "in", type='cairo')
+
+
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# calculamos totales, promedio y porcentaje de estudiantes mujeres y hombres agrupados por AÑO y GESTION
+# utilizamos group_by y summarise y mutate
+
+
+mujeres_est_gestion<- programadoras %>% group_by(anio, gestion) %>%
+  summarise(totalgeneroxG = sum(estMujeres), totalxG= sum(estMujeres, estVarones), promxG=(round(mean(estMujeres),0)),
+            porcengeneroxG = round(totalgeneroxG/totalxG * 100)) %>% mutate(genero='Mujeres')
+View(mujeres_est_gestion)
+
+hombres_est_gestion<- programadoras %>% group_by(anio, gestion) %>%
+  summarise(totalgeneroxG = sum(estVarones), totalxG= sum(estMujeres, estVarones), promxG=(round(mean(estVarones),0)),
+            porcengeneroxG = round(totalgeneroxG/totalxG * 100)) %>% mutate(genero='Hombres') 
+View(hombres_est_gestion)
+
+
+# Unimos las tablas generadas anteriormente;  estudiantes varones y mujeres por año y gestión
+estudiantes_R_gestion<-rbind(mujeres_est_gestion, hombres_est_gestion)%>% arrange(anio, gestion, totalgeneroxG)
+view(estudiantes_R_gestion)
+
+#-----------------------------
+# GRAFICOS DE LINEAS
+#-----------------------------
+# OPCION 2: B OSCURA
+# gráfico CANTIDAD de estudiantes por GÉNERO y GESTIÓN 
+
+ggplot(data= estudiantes_R_gestion, aes(x= anio, y= totalgeneroxG, color= genero)) +
+  geom_line(size=2) +
+  facet_wrap(~ gestion) +
+  scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c( 'Hombres', 'Mujeres'))+
+  labs(title = 'Estudiantes de carreras relacionadas con programación de Universidades \nArgentinas por tipo de Gestión\n', x='',y='Cantidad',fill= ' ',color='',
+       subtitle ="Para el período 2010-2015" , 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme_ft_rc() +
+  theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                  family ="Garamond",    
+                                  hjust = 0,vjust = 1,
+                                  face = 'bold', 
+                                  margin = margin(b = 12 * 1.2)),
+        legend.position="bottom", legend.text= element_text(color="grey", 
+                                                            size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+
+# Guardamos el gráfico generado
+ggsave(here("GESTION_lineas_1_B_facet_wrap.png"), height = 8, width = 10, units = "in", type='cairo')
+
+#--------------------------------------------------------------------------------------------------------------------------
+# GRÁFICOS NO UTILIZADOS EN LA PRESENTACIÓN
+# OPCION 1: A CLARA
+# gráfico de LÍNEAS con CANTIDAD de estudiantes por GENERO y GESTION 
+
+ggplot(data= estudiantes_R_gestion, aes(x= anio, y= totalgeneroxG, color= genero)) +
+  geom_line(size=2) +
+  #scale_fill_manual(values= c("#d8d860","#a32ea2")) + #labels= c('Hombres', 'Mujeres')+
+  facet_grid(gestion ~ genero,  scales = 'free_y') + 
+  scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
+  labs(title = 'Estudiantes de carreras relacionadas con Programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
+       subtitle ="Para el período 2010-2015" , 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme_ipsum_tw() +
+  theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                  family ="Garamond",    
+                                  hjust = 0,vjust = 1,
+                                  colour = "#2c204d", 
+                                  face = 'bold', 
+                                  margin = margin(b = 12 * 1.2)),
+        legend.position="  ", legend.text= element_text(color="#2c204d", 
+                                                        size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+
+
+ggsave(here("GESTION_lineas_1_A.png"), height = 8, width = 10, units = "in", type='cairo')
+
+
+#-----------------------------------------------------------------------------------
+#opcion2 negro: gráfico de LÍNEAS con ESCALA FREE_Y, entonces cada gráfico tiene su propia escala
+ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
+  geom_line(size=2) +
+  geom_point() +
+  scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
+  facet_wrap(~genero, ncol=1, scales="free_y") +
+  labs(title = 'Estudiantes de carreras relacionadas con programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
+       subtitle ="Para el período 2010-2015" , 
+       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
+  theme_ipsum_tw() +
+  theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
+        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
+                                  family ="Garamond",    
+                                  hjust = 0,vjust = 1,
+                                  colour = "#2c204d", 
+                                  face = 'bold', 
+                                  margin = margin(b = 12 * 1.2)),
+        legend.position="  ", legend.text= element_text(color="#2c204d", 
+                                                        size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
+
+
+ggsave(here("grafico_total_facet2.png"), height = 8, width = 10, units = "in", type='cairo')
+#--------------------------------------------------------------------
+# grafico de barras  CONTIGUAS
 # FUNCIONA NO TOCAR
 # OPCIÓN 1.A CLARA: grafico de barras  CONTIGUAS con cantidades FUNCIONA
 ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill=genero))+
@@ -135,196 +271,55 @@ ggplot(data=estudiantes_R_barra, aes(x=anio, y=totalgenero, fill=genero))+
 
 ggsave(here("barras_contigua_arriba_2.png"), height = 8, width = 10, units = "in", type='cairo')
 
-#theme_ipsum_tw()
-# para theme negro:theme_ft_rc() 
 
 
-
-#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# cantidad de ESTUDIANTES mujeres agrupadas por GESTION para el AÑO 2015
-
-mujeres_est_gestion<- programadoras %>% group_by(anio, gestion) %>%
-  summarise(totalgeneroxG = sum(estMujeres), totalxG= sum(estMujeres, estVarones), promxG=(round(mean(estMujeres),0)),
-            porcengeneroxG = round(totalgeneroxG/totalxG * 100)) %>% mutate(genero='Mujeres')
-View(mujeres_est_gestion)
-hombres_est_gestion<- programadoras %>% group_by(anio, gestion) %>%
-  summarise(totalgeneroxG = sum(estVarones), totalxG= sum(estMujeres, estVarones), promxG=(round(mean(estVarones),0)),
-            porcengeneroxG = round(totalgeneroxG/totalxG * 100)) %>% mutate(genero='Hombres') 
-View(hombres_est_gestion)
-
-#estudiantes varones y mujeres por gestión
-estudiantes_R_gestion<-rbind(mujeres_est_gestion, hombres_est_gestion)%>% arrange(anio, gestion, totalgeneroxG)
-view(estudiantes_R_gestion)
-
-# %>% mutate(brechaxG = paste0(formato_porc((totalVxG - totalMxG)/totalVxG * 100), "%"), medio = (totalVxG + totalMxG)/2)
-
-# totalVxG = sum(estVarones),
-# porcenVxG=round(totalVxG/totalxG * 100))
-
-#-----------------------------
-# GRAFICOS DE LINEAS
-#-----------------------------
-
-# OPCION 1: A CLARA
-# gráfico CANTIDAD de estudiantes por GENERO y GESTION 
-
-ggplot(data= estudiantes_R_gestion, aes(x= anio, y= totalgeneroxG, color= genero)) +
-  geom_line(size=2) +
-  #scale_fill_manual(values= c("#d8d860","#a32ea2")) + #labels= c('Hombres', 'Mujeres')+
-  facet_grid(gestion ~ genero,  scales = 'free_y') + 
-  scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
-  labs(title = 'Estudiantes de carreras relacionadas con Programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
-       subtitle ="Para el período 2010-2015" , 
-       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-  theme_ipsum_tw() +
-  theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
-        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
-                                  family ="Garamond",    
-                                  hjust = 0,vjust = 1,
-                                  colour = "#2c204d", 
-                                  face = 'bold', 
-                                  margin = margin(b = 12 * 1.2)),
-        legend.position="  ", legend.text= element_text(color="#2c204d", 
-                                                        size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
-
-
-ggsave(here("GESTION_lineas_1_A.png"), height = 8, width = 10, units = "in", type='cairo')
-
-# GRAFICOS DE LINEAS
-# OPCION 2: B OSCURA
-# gráfico CANTIDAD de estudiantes por GENERO y GESTION 
-
-ggplot(data= estudiantes_R_gestion, aes(x= anio, y= totalgeneroxG, color= genero)) +
-  geom_line(size=2) +
-  #scale_fill_manual(values= c("#d8d860","#a32ea2")) + #labels= c('Hombres', 'Mujeres')+
-  #facet_grid(gestion ~ genero,  scales = 'free_y') + 
-  facet_wrap(~ gestion) +
-  scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c( 'Hombres', 'Mujeres'))+
-  labs(title = 'Estudiantes de carreras relacionadas con programación de Universidades \nArgentinas por tipo de Gestión\n', x='',y='Cantidad',fill= ' ',color='',
-       subtitle ="Para el período 2010-2015" , 
-       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-  theme_ft_rc() +
-  theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
-        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
-                                  family ="Garamond",    
-                                  hjust = 0,vjust = 1,
-                                  #colour = "#2c204d", 
-                                  face = 'bold', 
-                                  margin = margin(b = 12 * 1.2)),
-        legend.position="bottom", legend.text= element_text(color="grey", 
-                                                            size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
-
-
-ggsave(here("GESTION_lineas_1_B_facet_wrap.png"), height = 8, width = 10, units = "in", type='cairo')
-
-#-------------------------------------------------------------------------------------------------------------
-view(estudiantes_R)
-# FUNCIONA
-# Gráfico con totales de estudiantes por género, escala real
-# opción 1
-ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
-  geom_line(size=2) +
-  geom_point(data=estudiantes_R, aes(anio, total), size=3) +
-  scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
-  facet_wrap(~genero, ncol=1) +
-  labs(title = 'Estudiantes de carreras relacionadas con programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
-       subtitle ="Para el período 2010-2015" , 
-       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-  theme_ft_rc() +
-  theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
-        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
-                                  family ="Garamond",    
-                                  hjust = 0,vjust = 1,
-                                  #colour = "#2c204d", 
-                                  face = 'bold', 
-                                  margin = margin(b = 12 * 1.2)),
-        legend.position="  ", legend.text= element_text(color="#2c204d", 
-                                                        size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
-
-#theme_ipsum_tw()# opción clara
-ggsave(here("grafico_total_facet_puntos.png"), height = 8, width = 10, units = "in", type='cairo')
-
-
-#opcion2 negro: CON ESCALA FREE_Y, entonces cada gráfico tiene su propia escala
-ggplot(data=estudiantes_R, aes(x=anio, y=total, color=genero))+
-  geom_line(size=2) +
-  geom_point() +
-  scale_colour_manual(values= c("#d8d860","#a32ea2"), labels= c('Mujeres', 'Hombres'))+
-  facet_wrap(~genero, ncol=1, scales="free_y") +
-  labs(title = 'Estudiantes de carreras relacionadas con programación \n de Universidades Argentinas\n', x='',y='',fill= ' ',
-       subtitle ="Para el período 2010-2015" , 
-       caption = "Fuente: Elaboración propia con datos de Chicas en tecnología") +
-  theme_ipsum_tw() +
-  theme(text = element_text(size=14, face = 'bold', color = "#2c204d"),
-        plot.title = element_text(size=18,                     #cambiamos el tamaño, fuente y color del título
-                                  family ="Garamond",    
-                                  hjust = 0,vjust = 1,
-                                  colour = "#2c204d", 
-                                  face = 'bold', 
-                                  margin = margin(b = 12 * 1.2)),
-        legend.position="  ", legend.text= element_text(color="#2c204d", 
-                                                        size= 12, hjust = 0.5,vjust = 1, family ="Garamond"))
-
-
-ggsave(here("grafico_total_facet2.png"), height = 8, width = 10, units = "in", type='cairo')
-
-
-
-
-
-
-
-
-
-# ESTUDIANTES por año y unidad académica
-#--------------------------------
-## cantidad de estudiantes mujeres por anio y por unidad academica   
-
+# ESTUDIANTES por año e Institución
+#-----------------------------------------------------------------------------------
+## calculamos cantidad de estudiantes mujeres agrupadas por año y por institución o universidad   
 
 cant_mujeres_anio_inst <- programadoras%>%group_by(institucion, anio)%>% summarise(totalMujeresXInstituto= sum(estMujeres), ) 
 View(cant_mujeres_anio_inst)
 
-## cantidad de estudiantes hombres por anio y por unidad academica
+## calculamos cantidad de estudiantes hombres por año y por institución o universidad
 cant_varones_anio_inst <- programadoras%>%group_by(institucion, anio)%>% summarise(totalHombresXinstituto= sum(estVarones)) 
 View(cant_varones_anio_inst)
 
 # me permitirá observar cantidad de mujeres y hombres por universidad, para luego hacer un ranking.
--------------------------------------------
-# función para redondear a decimales cuando calculo brecha de género. Código por Natshu
+
+------------------------------------------------
+# función para redondear a decimales cuando cálculo brecha de género o vlores con porcentaje. Código por @NatsuSh
 formato_porce <- function(numero, dec = 1){
     format(round(numero, digits = dec), nsmall = dec, decimal.mark = ",")
   }
-
---------------------------------------------------------------------------------------------------------------------------------------
-# cantidad de ESTUDIANTES mujeres agrupadas por institución para el AÑO 2015
+-------------------------------------------------
+# calculamos cantidad de ESTUDIANTES mujeres agrupadas por institución para el AÑO 2015
   
 mujeres_est<- programadoras%>% filter(anio==2015) %>% group_by(institucion)%>% summarise(totalM= sum(estMujeres),totalV= sum(estVarones), total=sum(estMujeres, estVarones), prom=(round(mean(estMujeres),0)),
-                                                                                           porcenM= round(totalM/total* 100), porcenV=round(totalV/total * 100))%>% 
+                               porcenM= round(totalM/total* 100), porcenV=round(totalV/total * 100))%>%            
 mutate(brecha = paste0(formato_porc((totalV-totalM)/total*100), "%"), medio = (totalV+totalM)/2)
 View(mujeres_est)
 
-# **IMPORTANTE: VERIFICAR BRECHA, si está bien calculada.
 
-# universidades con mayor brecha de género entre varones y mujeres en 2015
+# calculamos cuáles son las universidades con mayor brecha de género entre varones y mujeres en 2015
 mayor_brecha <- mujeres_est %>% top_n(10) %>% arrange(brecha)
 view(mayor_brecha)
 
 
 #--------------------------------------------------------------------------------
 # UNIVERSIDADES CON MAYOR CANTIDAD DE ESTUDIANTES
-# universidades con mayor cantidad de estudiantes mujeres para el año 2015
+
+# calculamos universidades con mayor cantidad de estudiantes mujeres para el año 2015 ordenadas por cantidad total
+# utilizamos top_n y arrange
 mas_mujeres_est <- mujeres_est %>% top_n(10) %>% arrange(desc(totalM))
 view(mas_mujeres_est)
 
-# universidades con mayor cantidad PORCENTAJE de estudiantes mujeres para el año 2015
+# calculamos universidades con mayor cantidad PORCENTAJE de estudiantes mujeres para el año 2015 ordenadas por cantidad total
 mayor_porcen_mujeres_est <- mujeres_est %>% top_n(10) %>% arrange(desc(porcenM))
 view(mayor_porcen_mujeres_est)
 
-
+#calculamos universidades con mayor cantidad de estudiantes mujeres para el año 2015 ordenadas por cantidad total
 menos_mujeres_est <- mujeres_est %>% top_n(10) %>% arrange(asc(totalM))
 view(menos_mujeres_est)
-
-
 
 
 # modificar nombre de columnas -revisar mi oresentacion o la de allison hill
