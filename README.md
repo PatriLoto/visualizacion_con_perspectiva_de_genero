@@ -10,21 +10,21 @@
 
 * [Chicas en Tecnología](https://www.chicasentecnologia.org/)
 
-  1. [Relevamiento cuantitativo de Mujeres programadoras en Argentina durante 2010-2015.](https://github.com/chicasentec/mujeres-programadoras-argentina) (nuestra presentación se basa en esto) 
+   1. [Relevamiento cuantitativo de Mujeres programadoras en Argentina durante 2010-2015.](https://github.com/chicasentec/mujeres-programadoras-argentina) (nuestra presentación se basa en esto) 
 
-  1. [Relevamientos e investigaciones de temas que contribuyen a cerrar la brecha de género en tecnología.](https://www.chicasentecnologia.org/investigacion) 
+   1. [Relevamientos e investigaciones de temas que contribuyen a cerrar la brecha de género en tecnología.](https://www.chicasentecnologia.org/investigacion) 
 
-    [Consideraciones sobre los datos.](https://mujeres-programadoras.chicasentecnologia.org/consideraciones.html)
+      [Consideraciones sobre los datos.](https://mujeres-programadoras.chicasentecnologia.org/consideraciones.html)
 
-    [Nota publicada en Infobae](https://www.infobae.com/def/desarrollo/2018/09/08/chicas-en-tecnologia-romper-con-la-brecha-de-genero/)
+      [Nota publicada en Infobae](https://www.infobae.com/def/desarrollo/2018/09/08/chicas-en-tecnologia-romper-con-la-brecha-de-genero/)
 
- 1. [Relevamiento cuantitativo de Mujeres en STEM en Argentina durante 2010-2016 (INCLUYE POSGRADO)](https://github.com/chicasentec/masdatos/)
+  1. [Relevamiento cuantitativo de Mujeres en STEM en Argentina durante 2010-2016 (INCLUYE POSGRADO)](https://github.com/chicasentec/masdatos/)
 
- 1. [Menos mitos, más datos](https://proyectos.chicasentecnologia.org/masdatos/)
+  1. [Menos mitos, más datos](https://proyectos.chicasentecnologia.org/masdatos/)
 
      [Infografía sobre mujeres en STEM](https://proyectos.chicasentecnologia.org/masdatos/infografia.pdf)
 
-5. [Información, orientaciones y actividades para cerrar la brecha de género](https://github.com/chicasentec/masdatos/blob/master/toolkit.pdf)
+  1. [Información, orientaciones y actividades para cerrar la brecha de género](https://github.com/chicasentec/masdatos/blob/master/toolkit.pdf)
 
 * Economía Feminista
 
@@ -32,7 +32,8 @@
 
   1. Informe: La desigualdad de género se puede medir parte 2. [https://economiafeminita.com/la-desigualdad-de-genero-se-puede-medir-2/](https://economiafeminita.com/la-desigualdad-de-genero-se-puede-medir-2/)
 
-    - Código por [Natsumi S. Shokida](@NatsuSh). [Segundo Trimestre 2018](https://rpubs.com/natsumi_shokida/segundo_trim_2018) 
+    Código por [Natsumi S. Shokida](@NatsuSh):
+    - [Segundo Trimestre 2018](https://rpubs.com/natsumi_shokida/segundo_trim_2018) 
     
     - [Tercer trimestre 2018](https://rpubs.com/natsumi_shokida/tercer_trim_2018)
 
@@ -48,9 +49,9 @@
 
 * Oficina de la Mujer - Corte Suprema de Justicia de la Nación
 
-    1. [Recopilación de femicidios para el período 2010-2019.](https://www.csjn.gov.ar/omrecopilacion/omfemicidio/homefemicidio.html) 
+   1. [Recopilación de femicidios para el período 2010-2019.](https://www.csjn.gov.ar/omrecopilacion/omfemicidio/homefemicidio.html) 
     
-    1. [Informe de Femicidios en Argentina durante 2019.](https://www.csjn.gov.ar/omrecopilacion/docs/resumen2019fem.pdf)
+   1. [Informe de Femicidios en Argentina durante 2019.](https://www.csjn.gov.ar/omrecopilacion/docs/resumen2019fem.pdf)
 
 * Indec
 
