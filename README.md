@@ -38,15 +38,15 @@
 
 * R-Ladies Santa Fe
 
-    [Análisis de mujeres en programación en el marco del Día de la mujer y la niña en la ciencia.](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2019/01-Febrero/script.R)
+   1. [Análisis de mujeres en programación en el marco del Día de la mujer y la niña en la ciencia.](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2019/01-Febrero/script.R)
     
-    [Charla Chicas y Computadoras](https://github.com/PatriLoto/visualizacion_con_perspectiva_de_genero/blob/master/recursos/EricaHynes-ChicasComputadoras.pdf) dada por Erica Hynes, Ministra de Ciencia y Tecnología de Santa Fe para Rladies Santa Fe.
+   1.  [Charla Chicas y Computadoras](https://github.com/PatriLoto/visualizacion_con_perspectiva_de_genero/blob/master/recursos/EricaHynes-ChicasComputadoras.pdf) dada por Erica Hynes, Ministra de Ciencia y Tecnología de Santa Fe para R-ladies Santa Fe.
 
 * Oficina de la Mujer - Corte Suprema de Justicia de la Nación
 
-    [Recopilación de femicidios para el período 2010-2019.](https://www.csjn.gov.ar/omrecopilacion/omfemicidio/homefemicidio.html) 
+    1. [Recopilación de femicidios para el período 2010-2019.](https://www.csjn.gov.ar/omrecopilacion/omfemicidio/homefemicidio.html) 
     
-    [Informe de Femicidios en Argentina durante 2019.](https://www.csjn.gov.ar/omrecopilacion/docs/resumen2019fem.pdf)
+    1. [Informe de Femicidios en Argentina durante 2019.](https://www.csjn.gov.ar/omrecopilacion/docs/resumen2019fem.pdf)
 
 * Indec
 
