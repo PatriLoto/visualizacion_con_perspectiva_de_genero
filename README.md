@@ -32,10 +32,7 @@
 
   1. Informe: La desigualdad de género se puede medir parte 2. [https://economiafeminita.com/la-desigualdad-de-genero-se-puede-medir-2/](https://economiafeminita.com/la-desigualdad-de-genero-se-puede-medir-2/)
 
-    Código por [Natsumi S. Shokida](@NatsuSh):
-    - [Segundo Trimestre 2018](https://rpubs.com/natsumi_shokida/segundo_trim_2018) 
-    
-    - [Tercer trimestre 2018](https://rpubs.com/natsumi_shokida/tercer_trim_2018)
+     Código por [Natsumi S. Shokida](@NatsuSh): [Segundo Trimestre 2018](https://rpubs.com/natsumi_shokida/segundo_trim_2018) y [Tercer trimestre 2018](https://rpubs.com/natsumi_shokida/tercer_trim_2018)
 
   1. Informe: Las trabajadoras de servicio doméstico en Argentina [https://economiafeminita.com/informe-servicio-domestico/](https://economiafeminita.com/informe-servicio-domestico/)
 
