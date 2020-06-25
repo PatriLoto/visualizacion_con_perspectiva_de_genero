@@ -28,9 +28,9 @@
 
 * Economía Feminista
 
-1. Informe: La desigualdad de género se puede medir. [https://economiafeminita.com/informe-desigualdad-genero/](https://economiafeminita.com/informe-desigualdad-genero/)
+1.Informe: La desigualdad de género se puede medir. [https://economiafeminita.com/informe-desigualdad-genero/](https://economiafeminita.com/informe-desigualdad-genero/)
 
-1. Informe: La desigualdad de género se puede medir parte 2. [https://economiafeminita.com/la-desigualdad-de-genero-se-puede-medir-2/](https://economiafeminita.com/la-desigualdad-de-genero-se-puede-medir-2/)
+1.Informe: La desigualdad de género se puede medir parte 2. [https://economiafeminita.com/la-desigualdad-de-genero-se-puede-medir-2/](https://economiafeminita.com/la-desigualdad-de-genero-se-puede-medir-2/)
 
      Código por [Natsumi S. Shokida](@NatsuSh). [https://rpubs.com/natsumi\_shokida/segundo\_trim_2018](https://rpubs.com/natsumi_shokida/segundo_trim_2018) [https://rpubs.com/natsumi\_shokida/tercer\_trim_2018](https://rpubs.com/natsumi_shokida/tercer_trim_2018)
 
@@ -38,9 +38,9 @@
 
 * R-Ladies Santa Fe
 
-   1. [Análisis de mujeres en programación en el marco del Día de la mujer y la niña en la ciencia.](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2019/01-Febrero/script.R)
+   1.[Análisis de mujeres en programación en el marco del Día de la mujer y la niña en la ciencia.](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2019/01-Febrero/script.R)
     
-   1.  [Charla Chicas y Computadoras](https://github.com/PatriLoto/visualizacion_con_perspectiva_de_genero/blob/master/recursos/EricaHynes-ChicasComputadoras.pdf) dada por Erica Hynes, Ministra de Ciencia y Tecnología de Santa Fe para R-ladies Santa Fe.
+   1.[Charla Chicas y Computadoras](https://github.com/PatriLoto/visualizacion_con_perspectiva_de_genero/blob/master/recursos/EricaHynes-ChicasComputadoras.pdf) dada por Erica Hynes, Ministra de Ciencia y Tecnología de Santa Fe para R-ladies Santa Fe.
 
 * Oficina de la Mujer - Corte Suprema de Justicia de la Nación
 
