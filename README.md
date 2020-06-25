@@ -39,6 +39,8 @@
 * R-Ladies Santa Fe
 
     [Análisis de mujeres en programación en el marco del Día de la mujer y la niña en la ciencia.](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2019/01-Febrero/script.R)
+    
+    [Charla Chicas y Computadoras](https://github.com/PatriLoto/visualizacion_con_perspectiva_de_genero/blob/master/recursos/EricaHynes-ChicasComputadoras.pdf) dada por Erica Hynes, Ministra de Ciencia y Tecnología de Santa Fe para Rladies Santa Fe.
 
 * Oficina de la Mujer - Corte Suprema de Justicia de la Nación
 
@@ -53,6 +55,7 @@
 * Gobierno de Santa Fe 
 
      [Informe sobre los Usos de Tiempo y Brechas de Género en el Sistema Científico Tecnológico de Santa Fe, Argentina.](https://www.santafe.gov.ar/index.php/web/content/download/256973/1354275/file/Informe%20final.pdf)
+     
 
 ### Datasets públicos sobre género.
 
