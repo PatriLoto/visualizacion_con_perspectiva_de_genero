@@ -1,0 +1,15 @@
+categoria_conicet_id;categoria_conicet_descripcion
+-1;No pertenece a Conicet
+1;Investigador asistente
+2;Investigador adjunto
+3;Investigador independiente
+4;Investigador principal
+5;Investigador superior
+6;Becario doctoral
+7;Becario postdoctoral
+8;Personal de apoyo
+9;Gestión CyT
+10;Pasante
+11;Otro personal Conicet
+12;Investigador correspondiente
+13;Investigador superior emérito
