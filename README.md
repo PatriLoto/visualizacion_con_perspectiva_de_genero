@@ -10,17 +10,17 @@
 
 * [Chicas en Tecnología](https://www.chicasentecnologia.org/)
 
-1. [Relevamiento cuantitativo de Mujeres programadoras en Argentina durante 2010-2015.](https://github.com/chicasentec/mujeres-programadoras-argentina) (nuestra presentación se basa en esto) 
+  1. [Relevamiento cuantitativo de Mujeres programadoras en Argentina durante 2010-2015.](https://github.com/chicasentec/mujeres-programadoras-argentina) (nuestra presentación se basa en esto) 
 
-1. [Relevamientos e investigaciones de temas que contribuyen a cerrar la brecha de género en tecnología.](https://www.chicasentecnologia.org/investigacion) 
+  1. [Relevamientos e investigaciones de temas que contribuyen a cerrar la brecha de género en tecnología.](https://www.chicasentecnologia.org/investigacion) 
 
     [Consideraciones sobre los datos.](https://mujeres-programadoras.chicasentecnologia.org/consideraciones.html)
 
     [Nota publicada en Infobae](https://www.infobae.com/def/desarrollo/2018/09/08/chicas-en-tecnologia-romper-con-la-brecha-de-genero/)
 
-1. [Relevamiento cuantitativo de Mujeres en STEM en Argentina durante 2010-2016 (INCLUYE POSGRADO)](https://github.com/chicasentec/masdatos/)
+ 1. [Relevamiento cuantitativo de Mujeres en STEM en Argentina durante 2010-2016 (INCLUYE POSGRADO)](https://github.com/chicasentec/masdatos/)
 
-1. [Menos mitos, más datos](https://proyectos.chicasentecnologia.org/masdatos/)
+ 1. [Menos mitos, más datos](https://proyectos.chicasentecnologia.org/masdatos/)
 
      [Infografía sobre mujeres en STEM](https://proyectos.chicasentecnologia.org/masdatos/infografia.pdf)
 
@@ -28,21 +28,23 @@
 
 * Economía Feminista
 
-1.Informe: La desigualdad de género se puede medir. [https://economiafeminita.com/informe-desigualdad-genero/](https://economiafeminita.com/informe-desigualdad-genero/)
+  1. Informe: La desigualdad de género se puede medir. [https://economiafeminita.com/informe-desigualdad-genero/](https://economiafeminita.com/informe-desigualdad-genero/)
 
-1.Informe: La desigualdad de género se puede medir parte 2. [https://economiafeminita.com/la-desigualdad-de-genero-se-puede-medir-2/](https://economiafeminita.com/la-desigualdad-de-genero-se-puede-medir-2/)
+  1. Informe: La desigualdad de género se puede medir parte 2. [https://economiafeminita.com/la-desigualdad-de-genero-se-puede-medir-2/](https://economiafeminita.com/la-desigualdad-de-genero-se-puede-medir-2/)
 
-     Código por [Natsumi S. Shokida](@NatsuSh). [https://rpubs.com/natsumi\_shokida/segundo\_trim_2018](https://rpubs.com/natsumi_shokida/segundo_trim_2018) [https://rpubs.com/natsumi\_shokida/tercer\_trim_2018](https://rpubs.com/natsumi_shokida/tercer_trim_2018)
+    - Código por [Natsumi S. Shokida](@NatsuSh). [Segundo Trimestre 2018](https://rpubs.com/natsumi_shokida/segundo_trim_2018) 
+    
+    - [Tercer trimestre 2018](https://rpubs.com/natsumi_shokida/tercer_trim_2018)
 
-1. Informe: Las trabajadoras de servicio doméstico en Argentina [https://economiafeminita.com/informe-servicio-domestico/](https://economiafeminita.com/informe-servicio-domestico/)
+  1. Informe: Las trabajadoras de servicio doméstico en Argentina [https://economiafeminita.com/informe-servicio-domestico/](https://economiafeminita.com/informe-servicio-domestico/)
 
 * R-Ladies Santa Fe
 
-1. [Análisis de mujeres en programación en el marco del Día de la mujer y la niña en la ciencia.](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2019/01-Febrero/script.R)
+  1. [Análisis de mujeres en programación en el marco del Día de la mujer y la niña en la ciencia.](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2019/01-Febrero/script.R)
    
-1. [Mujeres en Ciencias de la Computación](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2019/01-Febrero/STEM-RLadies.pdf)
+  1. [Mujeres en Ciencias de la Computación](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2019/01-Febrero/STEM-RLadies.pdf)
     
-1. [Charla Chicas y Computadoras](https://github.com/PatriLoto/visualizacion_con_perspectiva_de_genero/blob/master/recursos/EricaHynes-ChicasComputadoras.pdf) dada por Erica Hynes, Ministra de Ciencia y Tecnología de Santa Fe para R-ladies Santa Fe.
+  1. [Charla Chicas y Computadoras](https://github.com/PatriLoto/visualizacion_con_perspectiva_de_genero/blob/master/recursos/EricaHynes-ChicasComputadoras.pdf) dada por Erica Hynes, Ministra de Ciencia y Tecnología de Santa Fe para R-ladies Santa Fe.
 
 * Oficina de la Mujer - Corte Suprema de Justicia de la Nación
 
