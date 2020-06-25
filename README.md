@@ -38,9 +38,11 @@
 
 * R-Ladies Santa Fe
 
-   1.[Análisis de mujeres en programación en el marco del Día de la mujer y la niña en la ciencia.](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2019/01-Febrero/script.R)
+1. [Análisis de mujeres en programación en el marco del Día de la mujer y la niña en la ciencia.](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2019/01-Febrero/script.R)
+   
+1. [Mujeres en Ciencias de la Computación](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2019/01-Febrero/STEM-RLadies.pdf)
     
-   1.[Charla Chicas y Computadoras](https://github.com/PatriLoto/visualizacion_con_perspectiva_de_genero/blob/master/recursos/EricaHynes-ChicasComputadoras.pdf) dada por Erica Hynes, Ministra de Ciencia y Tecnología de Santa Fe para R-ladies Santa Fe.
+1. [Charla Chicas y Computadoras](https://github.com/PatriLoto/visualizacion_con_perspectiva_de_genero/blob/master/recursos/EricaHynes-ChicasComputadoras.pdf) dada por Erica Hynes, Ministra de Ciencia y Tecnología de Santa Fe para R-ladies Santa Fe.
 
 * Oficina de la Mujer - Corte Suprema de Justicia de la Nación
 
