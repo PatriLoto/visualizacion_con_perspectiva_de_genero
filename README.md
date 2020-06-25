@@ -60,7 +60,7 @@
 
 - [Datos del Banco Mundial](http://datatopics.worldbank.org/gender/)
 
-### [Recursos para aprender visualización de datos con R](https://github.com/PatriLoto/viz-datos-con-ggplot2-para-WIDS2020)
 
+### Para la elaboración del demo con R se utilizo como referencia el libro [R para Ciencia de Datos](https://es.r4ds.hadley.nz/) de Hadley Wickham(@hadleywickham). 
 
-
+### [Más Recursos para aprender visualización de datos con R](https://github.com/PatriLoto/viz-datos-con-ggplot2-para-WIDS2020)
