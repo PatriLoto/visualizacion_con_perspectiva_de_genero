@@ -42,7 +42,7 @@
    
   1. [Mujeres en Ciencias de la Computación](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2019/01-Febrero/STEM-RLadies.pdf)
     
-  1. [Charla Chicas y Computadoras](https://github.com/PatriLoto/visualizacion_con_perspectiva_de_genero/blob/master/recursos/EricaHynes-ChicasComputadoras.pdf) dada por Erica Hynes, Ministra de Ciencia y Tecnología de Santa Fe para R-ladies Santa Fe.
+  1. [Charla Chicas y Computadoras](https://github.com/rladies/meetup-presentations_santafe/blob/master/eventos/2018/07-Noviembre/EricaHynes-ChicasComputadoras.pdf) dada por Erica Hynes, Ministra de Ciencia y Tecnología de Santa Fe para R-ladies Santa Fe.
 
 * Oficina de la Mujer - Corte Suprema de Justicia de la Nación
 
